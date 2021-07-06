@@ -1,0 +1,32 @@
+versions funcionals segons metodologia SCRUM
+
+V1
+===========
+-càrrega de la bd v1
+-càrrega de la bd municipis
+-càrrega de la bd sakila
+
+Aplicació web:
+-primer exemple, base de dades municipis: "select * from provincies"
+-es mostra la pregunta a contestar
+-formulari bàsic: input per posar la resposta; botó enviar
+-es mostra el resultat, el resultat correcte (si no era correcte), i la puntuació
+-gestió dels errors
+-credencials per la bd: bdquest/keiL2lai
+-bd_questio mínim sobre la bd municipis (2 exemples)
+-bd_questio mínim sobre la bd sakila (2 exemples)
+
+TODO: bd, crear el camp rol. Distingir entre rol d'alumne i rol de professor.
+
+V2
+============
+-càrrega de la bd v2
+-completar preguntes sobre la bd municipis
+-mostra d'usuaris: 1 professor, dos alumnes
+-...
+
+V3
+=============
+-càrrega de la bd v3
+-login contra google account (domini jaumebalmes.net)
+

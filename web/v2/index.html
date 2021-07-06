@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+<meta charset="utf-8"></meta>
+<title>BDQuest</title>
+<script src="./js/index.js"></script>
+
+</head>
+<body onload="init()">
+<h1>Qüestionari BD</h1>
+
+<div id="sel_questionaris">
+	<label>Qüestionaris:</label><br />
+</div>
+<h2 id="questionari"></h2>
+<h3 id="questio"></h3>
+<div id="solucio"></div>
+
+
+<form method="post">
+	<input type="hidden" name="bd"></input>
+	<input type="hidden" name="solucio"></input> 
+	<textarea id="sql_alumne" name="sql_alumne" rows="6" cols="60"></textarea><br /><br />
+</form>
+<button onclick="processar(document.forms[0].bd.value, document.forms[0].solucio.value, document.getElementById('sql_alumne').value)">Envia</button>
+<div id="rubrica"></div>
+<div id="sqloutput"></div>
+</body>
+</html>
