@@ -1,5 +1,11 @@
+var id_quest;
+var num_preguntes;
+var arr_preguntes;
+var num_pregunta;
+
 function init() {
     load_quests();
+    document.getElementById("pregunta_seguent").addEventListener("click", function(){pregunta_seguent()});
 }
 
 function processar(bd, solucio, sql_alumne) {
@@ -13,6 +19,8 @@ function processar(bd, solucio, sql_alumne) {
             var obj = JSON.parse(json_obj);
             var resultat = obj.resultat;
             document.getElementById('rubrica').innerHTML = resultat;
+            //TODO: ja podem puntuar la pregunta
+
             if (resultat=="ERROR") {
                 document.getElementById('sqloutput').innerHTML = obj.data;
             } else {
@@ -41,15 +49,14 @@ function processar(bd, solucio, sql_alumne) {
                     }
 
                     tblBody.appendChild(hilera);
-
                 }
 
                 tabla.appendChild(tblBody);
-
                 tabla.setAttribute("border", "1");
 
                 document.getElementById('sqloutput').innerHTML = "";
                 document.getElementById('sqloutput').appendChild(tabla);
+                if (num_pregunta<num_preguntes) document.getElementById('pregunta_seguent').disabled = false;
             }
 
         } else {
@@ -68,7 +75,7 @@ function load_quests() {
     {
         if (xmlhttp.readyState==4 && xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
-            //alert(json_obj)
+            //console.log(json_obj)
             var arr = JSON.parse(json_obj);
             var selectList = document.createElement("select");
             selectList.id = "sel_questionaris2";
@@ -96,13 +103,39 @@ function load_quests() {
 
 }
 
-function canviar_questionari(id_quest) {
+function canviar_questionari(vid_quest) {
+    id_quest = vid_quest;
     var e = document.getElementById("sel_questionaris2")
     document.getElementById("questionari").innerHTML = "Qüestionari: " + e.options[e.selectedIndex].text;
     //document.getElementById("questionari").innerHTML = e.options[id_quest].text;
+    document.getElementById("rubrica").innerHTML = "";
+    document.getElementById("sqloutput").innerHTML = "";
 
-    //i ara ja puc mostrar la primera pregunta del qüestionari
-    var num = 1;
+    var xmlhttp;
+    xmlhttp=new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+            json_obj=xmlhttp.responseText;
+            alert(json_obj)
+            var obj = JSON.parse(json_obj);
+            num_preguntes = obj.num_preguntes;
+            arr_preguntes = obj.arr_preguntes;
+            num_pregunta = 1;
+            document.forms[0].num_preguntes.value = num_preguntes;
+            document.getElementById('pregunta_seguent').disabled = false;
+            carrega_pregunta();
+        }
+    }
+    xmlhttp.open("POST","./php/load_questionari.php",true);
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlhttp.send("id_quest=" + id_quest);
+
+}
+
+function carrega_pregunta() {
+    document.getElementById('pregunta_seguent').disabled = true;
+    document.forms[0].num_pregunta.value = arr_preguntes[num_pregunta-1];
 
     var xmlhttp;
     xmlhttp=new XMLHttpRequest();
@@ -112,13 +145,20 @@ function canviar_questionari(id_quest) {
             json_obj=xmlhttp.responseText;
             //alert(json_obj)
             var arr = JSON.parse(json_obj);
-            document.getElementById("questio").innerHTML = "#" + num + ". (" + arr[0].bd + ") " + arr[0].questio;
+            //var arr = obj.data;
+            document.getElementById("questio").innerHTML = "#" + num_pregunta + "/" + num_preguntes + ". (" + arr[0].bd + ") " + arr[0].questio;
             document.getElementById("solucio").innerHTML = arr[0].solucio;
             document.forms[0].bd.value = arr[0].bd;
             document.forms[0].solucio.value = arr[0].solucio;
+            document.forms[0].sql_alumne.value = arr[0].solucio; //comentar
         }
     }
     xmlhttp.open("POST","./php/load_questio.php",true);
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xmlhttp.send("id_quest=" + id_quest + "&num=" + num);
+    xmlhttp.send("id_quest=" + id_quest + "&num_pregunta=" + arr_preguntes[num_pregunta-1]);
 }
+
+function pregunta_seguent() {
+    num_pregunta = num_pregunta + 1;
+    carrega_pregunta();
+}   

@@ -7,7 +7,8 @@ bd_questio (id_bd_questio, id_bd, questio, nivell, solucio)
 usuari (id_usuari, nom, cognoms, curs)
 quest (id_quest, quest, dia, id_bd, random)
 quest_detall (id_quest_detall, id_quest, id_bd_questio, num)
-nota (id_nota, id_quest, id_usuari, nota)
+usuari_quest (id_usuari_quest, id_usuari, id_quest, dia, nota)
+usuari_quest_detall (id_usuari_quest_detall, id_usuari_quest, id_quest_detall, valor)
 */
 
 # CREATE DATABASE bdquest CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -18,6 +19,8 @@ nota (id_nota, id_quest, id_usuari, nota)
 # GRANT ALL ON sakila.* TO bdquest@localhost;
 # flush privileges
 
+DROP TABLE IF EXISTS usuari_quest_detall;
+DROP TABLE IF EXISTS usuari_quest;
 DROP TABLE IF EXISTS quest_detall;
 DROP TABLE IF EXISTS quest;
 DROP TABLE IF EXISTS usuari;
@@ -59,6 +62,21 @@ id_quest_detall smallint AUTO_INCREMENT PRIMARY KEY,
 id_quest smallint NOT NULL REFERENCES quest,
 id_bd_questio smallint REFERENCES bd_questio,
 num smallint
+);
+
+CREATE TABLE usuari_quest (
+id_usuari_quest smallint AUTO_INCREMENT PRIMARY KEY,
+id_usuari smallint REFERENCES usuari(id_usuari),
+id_quest smallint REFERENCES quest,
+dia DATE NOT NULL,
+nota decimal(4,2) CHECK (nota >= 0 and nota <= 10)
+);
+
+CREATE TABLE usuari_quest_detall (
+id_usuari_quest_detall smallint AUTO_INCREMENT PRIMARY KEY,
+id_usuari_quest smallint REFERENCES usuari_quest,
+id_quest_detall smallint REFERENCES quest_detall,
+valor smallint CHECK (valor IN (0,1))
 );
 
 INSERT INTO bd VALUES (1,'municipis',3);
@@ -103,3 +121,7 @@ INSERT INTO quest_detall VALUES (13, 4, 9, 3);
 # consultes
 # donat el id_quest, llistat de les preguntes:
 select id_quest_detall, bd, questio, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=1;
+
+# puntuem una pregunta
+select id_quest_detall from quest_detall where id_quest=1 and num=2; # 2
+insert into usuari_quest_detall values (1,3,2,1);

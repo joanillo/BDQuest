@@ -1,15 +1,8 @@
 <?php
 include("open_db_bdquest.php");
 
-$id_quest = $_POST['id_quest'];
-$num_pregunta = $_POST['num_pregunta'];
+$sql = "select * from quest order by id_quest";
 
-//echo $id_quest;
-//echo $num_pregunta;
-
-$sql = "select id_quest_detall, bd, questio, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=".$id_quest." and num=".$num_pregunta;
-
-//echo $sql;
 
 $resultset = mysqli_query($conn_bdquest,$sql);
 

@@ -16,17 +16,28 @@ Aplicació web:
 -bd_questio mínim sobre la bd municipis (2 exemples)
 -bd_questio mínim sobre la bd sakila (2 exemples)
 
-TODO: bd, crear el camp rol. Distingir entre rol d'alumne i rol de professor.
-
 V2
 ============
 -càrrega de la bd v2
--completar preguntes sobre la bd municipis
--mostra d'usuaris: 1 professor, dos alumnes
--...
+-mostra de preguntes sobre la bd municipis
+-mostra de preguntes sobre la bd municipis
+-mostra d'usuaris: 1 admin, 1 professor, dos alumnes
+-ja podem fer qüetionaris (encara no s'avalua)
+-podem canviar de qüestionari
+-qüestionaris amb preguntes aleatòries (camp quest.random)
 
 V3
 =============
 -càrrega de la bd v3
+-només treballem amb el primer alumne
+-avaluem els qüestionaris: update quest_usuari, quest_detall_usuari
+-de moment un quest només es pot fer una vegada, per un usuari
+-deshabilitar el botó Envia quan calgui
+-quan el resultat d'una select no retorna res, posar '0 records'
+-botó 'Test' (per veure el resultat de la select i que no toqui la bd)
+
+v4
+=============
+
 -login contra google account (domini jaumebalmes.net)
 

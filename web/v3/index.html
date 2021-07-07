@@ -25,7 +25,8 @@
 	<input type="hidden" name="solucio"></input> 
 	<textarea id="sql_alumne" name="sql_alumne" rows="6" cols="60"></textarea><br /><br />
 </form>
-<button onclick="processar(document.forms[0].bd.value, document.forms[0].solucio.value, document.getElementById('sql_alumne').value)">Envia</button>
+<button id="envia" onclick="processar(document.forms[0].bd.value, document.forms[0].solucio.value, document.getElementById('sql_alumne').value)"  disabled="">Envia</button>
+<button id="test" onclick="processar_test(document.forms[0].bd.value, document.getElementById('sql_alumne').value)" disabled="">Test</button>
 <div id="rubrica"></div>
 <div id="sqloutput"></div>
 </body>
