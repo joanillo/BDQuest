@@ -4,7 +4,7 @@ bd (id_bd, bd, num_taules)
 #proposta d'exercicis sobre la base de dades de treball
 bd_questio (id_bd_questio, id_bd, questio, nivell, solucio)
 
-usuari (id_usuari, nom, cognoms, rol, curs)
+usuari (id_usuari, nom, cognoms, rol, curs, email)
 quest (id_quest, quest, dia, id_bd, random)
 quest_detall (id_quest_detall, id_quest, id_bd_questio, num)
 usuari_quest (id_usuari_quest, id_usuari, id_quest, dia, nota)
@@ -46,7 +46,8 @@ id_usuari smallint AUTO_INCREMENT PRIMARY KEY,
 nom VARCHAR(255) NOT NULL,
 cognoms VARCHAR(255) NOT NULL,
 rol VARCHAR(30) CHECK (rol IN ('admin', 'professor', 'alumne')),
-curs VARCHAR(5) NULL
+curs VARCHAR(5) NULL,
+email VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE quest (
@@ -93,10 +94,10 @@ INSERT INTO bd_questio VALUES (7, 2, 'En quines pel·lícules ha participat l''a
 INSERT INTO bd_questio VALUES (8, 2, 'Títols de les pel·lícules en anglès (ordre alfabètic, les 10 primeres).', 2, 'select title from film f, language l where f.language_id=l.language_id and name=''English'' order by title limit 10;');
 INSERT INTO bd_questio VALUES (9, 2, 'Llista de pel·lícules de la categoria Documentals (títol, ordenat alfabèticament).', 2, 'select title from film f, category c, film_category fc where f.film_id=fc.film_id and fc.category_id=c.category_id and c.name=''Documentary'' order by title;');
 
-INSERT INTO usuari VALUES (1, 'Joan', 'Quintana', 'admin', NULL);
-INSERT INTO usuari VALUES (2, 'Joan', 'Quintana', 'professor', NULL);
-INSERT INTO usuari VALUES (3, 'Arnau', 'Riera', 'alumne', '1DAM');
-INSERT INTO usuari VALUES (4, 'Clara', 'Ventura', 'alumne', '1DAM');
+INSERT INTO usuari VALUES (1, 'Joan', 'Quintana', 'admin', NULL, 'admin@jaumebalmes.net');
+INSERT INTO usuari VALUES (2, 'Joan', 'Quintana', 'professor', NULL, 'jquintana@jaumebalmes.net');
+INSERT INTO usuari VALUES (3, 'Arnau', 'Riera', 'alumne', '1DAM', 'empresa@jaumebalmes.net');
+INSERT INTO usuari VALUES (4, 'Clara', 'Ventura', 'alumne', '1DAM', 'clara@jaumebalmes.net');
 
 INSERT INTO quest VALUES (1, 'bàsic municipis', '2021-07-05', 1, 0);
 INSERT INTO quest VALUES (2, 'bàsic municipis 2', '2021-07-05', 1, 1);
@@ -120,8 +121,8 @@ INSERT INTO quest_detall VALUES (13, 4, 9, 3);
 
 # consultes
 # donat el id_quest, llistat de les preguntes:
-select id_quest_detall, bd, questio, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=1;
+#select id_quest_detall, bd, questio, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=1;
 
 # puntuem una pregunta
-select id_quest_detall from quest_detall where id_quest=1 and num=2; # 2
-insert into usuari_quest_detall values (1,3,2,1);
+#select id_quest_detall from quest_detall where id_quest=1 and num=2; # 2
+#insert into usuari_quest_detall values (1,3,2,1);

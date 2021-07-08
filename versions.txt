@@ -38,6 +38,6 @@ V3
 
 v4
 =============
-
 -login contra google account (domini jaumebalmes.net)
-
+-identifico el mail, id_usuari, nom, cognoms, curs
+-fins que no està identificat l'usuari no podem fer res.

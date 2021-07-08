@@ -1,3 +1,5 @@
+amb el compte de jquintana@jaumebalmes.net
+
 https://code.tutsplus.com/tutorials/create-a-google-login-page-in-php--cms-33214
 Google Developers console.
 https://console.cloud.google.com/apis/dashboard?pli=1&project=probable-axon-120516&folder=&organizationId=
