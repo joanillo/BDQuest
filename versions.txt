@@ -36,8 +36,29 @@ V3
 -quan el resultat d'una select no retorna res, posar '0 records'
 -botó 'Test' (per veure el resultat de la select i que no toqui la bd)
 
-v4
+v4 (ve de v3)
 =============
--login contra google account (domini jaumebalmes.net)
+-login contra google account (domini jaumebalmes.net) (OAuth2 amb PHP)
 -identifico el mail, id_usuari, nom, cognoms, curs
 -fins que no està identificat l'usuari no podem fer res.
+-TODO: si un usuari es loga i no està a la base de dades no funciona (com és lògic, però s'ha d'avisar)
+-TODO: acabar
+
+v5 (ve de v3)
+=============
+-login contra google account (domini jaumebalmes.net) (OAuth2 amb Javascript)
+-identifico el mail, id_usuari, nom, cognoms, curs
+-fins que no està identificat l'usuari no podem fer res.
+-TODO: si un usuari es loga i no està a la base de dades no funciona (com és lògic, però s'ha d'avisar)
+-a la bd, canviem quest_detall.num per quest_detall.num_pregunta
+-si estic fent un qüestionari, un error de sintaxi també compta com a malament. Per practicar hi ha el botó Test.
+-SQL: guardo a la bd les respostes dels alumnes. Així es podrà fer un informe de les respostes dels alumnes i de les solucions correctes.
+
+v6
+=============
+-incorporació de sentències DML (insert, update, delete) (fins ara només hem fet sentències select)
+-per fer-ho creem la taula bd_questio_check, i el camp quest_detall.rollback
+-amb la taula bd_questio_check puc saber les sentències que s'han d'executar per comprovar si el que ha fet l'alumne és correcte
+-possibilitat d'executar i processar vàries comandes SQL separades per ;
+-treiem onclick, onload de index.html
+-function processar(bd, solucio, sql_alumne) -> processar() (no cal arguments)

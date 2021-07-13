@@ -31,7 +31,7 @@ num_taules smallint
 
 CREATE TABLE bd_questio (
 id_bd_questio smallint AUTO_INCREMENT PRIMARY KEY,
-id_bd smallint references BD,
+id_bd smallint references bd,
 questio VARCHAR(255) NOT NULL,
 nivell smallint CHECK (nivell IN (1,2,3,4,5)),
 solucio text

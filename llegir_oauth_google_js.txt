@@ -1,0 +1,14 @@
+amb el compte de jquintana@jaumebalmes.net
+https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
+
+Projecte nou: login bdquest js
+Anem al Panel, Credenciales
+
+Origenes autorizados de Javascript: http://localhost
+URI de redireccionamiento: no poso res
+
+client id: 369980418925-tkatmh1aqt2otkccib6gueovoq5pi35e.apps.googleusercontent.com
+secret: ZanVuybvtOh6QFQz-qmcQ2RM
+
+La solució està aquí:
+https://developers.google.com/identity/sign-in/web/sign-in

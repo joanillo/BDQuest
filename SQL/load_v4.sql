@@ -35,7 +35,7 @@ num_taules smallint
 
 CREATE TABLE bd_questio (
 id_bd_questio smallint AUTO_INCREMENT PRIMARY KEY,
-id_bd smallint references BD,
+id_bd smallint references bd,
 questio VARCHAR(255) NOT NULL,
 nivell smallint CHECK (nivell IN (1,2,3,4,5)),
 solucio text
@@ -98,6 +98,7 @@ INSERT INTO usuari VALUES (1, 'Joan', 'Quintana', 'admin', NULL, 'admin@jaumebal
 INSERT INTO usuari VALUES (2, 'Joan', 'Quintana', 'professor', NULL, 'jquintana@jaumebalmes.net');
 INSERT INTO usuari VALUES (3, 'Arnau', 'Riera', 'alumne', '1DAM', 'empresa@jaumebalmes.net');
 INSERT INTO usuari VALUES (4, 'Clara', 'Ventura', 'alumne', '1DAM', 'clara@jaumebalmes.net');
+INSERT INTO usuari VALUES (5, 'Maria', 'Quintana', 'alumne', '1ASIX', '20mquintan@jaumebalmes.net');
 
 INSERT INTO quest VALUES (1, 'bàsic municipis', '2021-07-05', 1, 0);
 INSERT INTO quest VALUES (2, 'bàsic municipis 2', '2021-07-05', 1, 1);
