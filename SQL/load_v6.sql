@@ -79,7 +79,6 @@ FOREIGN KEY(id_quest) REFERENCES quest(id_quest),
 FOREIGN KEY(id_bd_questio) REFERENCES bd_questio(id_bd_questio)
 );
 
-
 CREATE TABLE usuari_quest (
 id_usuari_quest smallint AUTO_INCREMENT PRIMARY KEY,
 id_usuari smallint,
@@ -157,10 +156,10 @@ INSERT INTO quest_detall VALUES (11, 4, 7, 1);
 INSERT INTO quest_detall VALUES (12, 4, 8, 2);
 INSERT INTO quest_detall VALUES (13, 4, 9, 3);
 INSERT INTO quest_detall VALUES (14, 5, 10, 1);
-INSERT INTO quest_detall VALUES (15, 5, 11, 2);
+INSERT INTO quest_detall VALUES (15, 5, 14, 2);
 INSERT INTO quest_detall VALUES (16, 5, 12, 3);
 INSERT INTO quest_detall VALUES (17, 5, 13, 4);
-INSERT INTO quest_detall VALUES (18, 5, 14, 5);
+INSERT INTO quest_detall VALUES (18, 5, 11, 5);
 
 
 # consultes

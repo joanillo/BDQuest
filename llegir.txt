@@ -81,3 +81,20 @@ group by
 -examen
 ===
 
+utf8 a fpdf:
+https://stackoverflow.com/questions/6334134/fpdf-utf-8-encoding-how-to
+
+La solució més ràpida i fàcil és afegir la línia:
+$txt = iconv('utf-8', 'cp1252', $txt); //canvi
+en el fitxer fpdf.php:
+
+	if($txt!=='')
+	{
+		if(!isset($this->CurrentFont))
+			$this->Error('No font has been set');
+		$txt = iconv('utf-8', 'cp1252', $txt); //canvi
+		if($align=='R')
+			$dx = $w-$this->cMargin-$this->GetStringWidth($txt);
+		elseif($align=='C')
+			$dx = ($w-$this->GetStringWidth($txt))/2;
+		else

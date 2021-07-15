@@ -1,0 +1,16 @@
+body {
+	font-family: "Arial","Lucida Console";
+}
+
+pre {
+	font-family: "Lucida Console", "Courier New", monospace;
+	padding: 10px;
+	background-color: #cccccc;
+}
+
+div.login{
+position: fixed;
+left: 140px;
+top: 20px;
+float:right;
+}

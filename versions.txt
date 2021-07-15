@@ -1,4 +1,5 @@
 versions funcionals segons metodologia SCRUM
+Trello: https://trello.com/b/9fbqTkyD/bdquest
 
 V1
 ===========
@@ -38,6 +39,7 @@ V3
 
 v4 (ve de v3)
 =============
+-càrrega de la bd v4
 -login contra google account (domini jaumebalmes.net) (OAuth2 amb PHP)
 -identifico el mail, id_usuari, nom, cognoms, curs
 -fins que no està identificat l'usuari no podem fer res.
@@ -46,6 +48,7 @@ v4 (ve de v3)
 
 v5 (ve de v3)
 =============
+-càrrega de la bd v5
 -login contra google account (domini jaumebalmes.net) (OAuth2 amb Javascript)
 -identifico el mail, id_usuari, nom, cognoms, curs
 -fins que no està identificat l'usuari no podem fer res.
@@ -56,9 +59,33 @@ v5 (ve de v3)
 
 v6
 =============
+-càrrega de la bd v6
 -incorporació de sentències DML (insert, update, delete) (fins ara només hem fet sentències select)
--per fer-ho creem la taula bd_questio_check, i el camp quest_detall.rollback
--amb la taula bd_questio_check puc saber les sentències que s'han d'executar per comprovar si el que ha fet l'alumne és correcte
--possibilitat d'executar i processar vàries comandes SQL separades per ;
+-per fer-ho creem la taula bd_questio_comprovacio, i el camp bd_questio.rollback
+-amb la taula bd_questio_comprovacio puc saber les sentències que s'han d'executar per comprovar si el que ha fet l'alumne és correcte
+-processar_rollback.php i processar_test_rollback.php
+-possibilitat d'executar i processar vàries comandes DML separades per ; (nedessari per fer transaccions)
 -treiem onclick, onload de index.html
 -function processar(bd, solucio, sql_alumne) -> processar() (no cal arguments)
+-les comandes poden acabar o no amb ;
+-mode_developer = 1 | 0
+
+v7
+=============
+-càrrega de la bd v7 (hi ha les dades que simulen que s'han fet qüestionaris)
+-Quan un usuari acaba el qüestionari, pot veure l'informe (i se'l pot descarregar amb pdf)
+-canvis diversos
+
+v8
+=============
+-càrrega de la bd v8
+-taula usuari -> alumne
+-creem la taula professor (distingim entre professor i alumne)
+-en el codi js i php, usuari->alumne
+-Els usuaris només veuen els quests del seu curs (del seu professor)
+-ja podem fer informes (només visibles per als professors)
+-TODO: estat d'un qüestionari: amagat, obert
+-TODO: .gitignore
+-TODO: bd_questio_comprovacio primary key hauria de ser id_bd_questio_comprovacio
+-TODO: que jquintana@jaumebalmes.net pugui actuar amb rol d'alumne o de professor. Per fer-ho, puc controlar-ho amb la variable rol_mode, a PHP o en un camp de la bd
+

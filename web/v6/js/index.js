@@ -1,3 +1,5 @@
+var mode_developer = 1; //developer=1 (es proporcional la solució, que apareix en el textarea); developer=0 (és el mode normal per als alumnes)
+
 var googleUser; // The current user.
 var email;
 var id_usuari;
@@ -20,6 +22,7 @@ function init() {
     document.getElementById("pregunta_seguent").addEventListener("click", function(){pregunta_seguent()});
     document.getElementById("envia").addEventListener("click", function(){processar()});
     document.getElementById("test").addEventListener("click", function(){processar_test()});
+    document.getElementById("solucio").style.display = (mode_developer==0) ? "none" : "block";
 }
 
 function processar() {
@@ -29,7 +32,7 @@ function processar() {
     {
         if (xmlhttp.readyState==4 && xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
-            alert(json_obj)
+            //alert(json_obj)
             //console.log(json_obj);
             
             var obj = JSON.parse(json_obj);
@@ -38,7 +41,7 @@ function processar() {
             document.getElementById('rubrica').innerHTML = resultat;
             current_id_usuari_quest = obj.last_id;
 
-            if (obj.data.indexOf("Error")==0) {
+            if (obj.data.indexOf("Error")==0 || obj.data.indexOf("Affected")==0 ) {
                 document.getElementById('sqloutput').innerHTML = obj.data;
             } else {
                 var arr = obj.data;
@@ -119,7 +122,7 @@ function processar_test() {
             //alert(json_obj);
             var obj = JSON.parse(json_obj);
             var resultat = obj.resultat;
-            if (resultat=="ERROR") {
+            if (resultat=="ERROR" || obj.data.indexOf("Affected")==0) {
                 document.getElementById('sqloutput').innerHTML = obj.data;
             } else {
                 var arr = obj.data;
@@ -261,7 +264,7 @@ function carrega_pregunta() {
             document.forms[0].bd.value = arr[0].bd;
             document.forms[0].rollback.value = arr[0].rollback;
             document.forms[0].solucio.value = arr[0].solucio;
-            document.forms[0].sql_alumne.value = arr[0].solucio; //comentar
+            document.forms[0].sql_alumne.value = (mode_developer==0) ? "" : arr[0].solucio; //mostrem la solució si estem en mode desenvolupament 
         }
     }
     xmlhttp.open("POST","./php/load_questio.php",true);
