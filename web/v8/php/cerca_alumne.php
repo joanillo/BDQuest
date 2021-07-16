@@ -10,7 +10,7 @@ if (!$conn) {
 mysqli_select_db($conn,'bdquest') or die('Could not select bdquest database.');
 mysqli_set_charset($conn, 'utf8');
 
-$sql = "select * from alumne where email='$email'";
+$sql = "select * from alumne where email='$email' and actiu=1";
 $resultset = mysqli_query($conn, $sql);
 
 if (!$resultset) {

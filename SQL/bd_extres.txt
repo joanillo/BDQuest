@@ -1,0 +1,12 @@
+mysql> CREATE DATABASE municipis CHARACTER SET utf8 COLLATE utf8_general_ci;
+mysql> GRANT ALL ON municipis.* TO bdquest@localhost;
+mysql> flush privileges;
+
+$ mysql -u root -p municipis -f < dades_municipis_mysql.sql > /home/ubuntu/control_errors.log 2>&1
+
+mysql> CREATE DATABASE sakila CHARACTER SET utf8 COLLATE utf8_general_ci;
+mysql> GRANT ALL ON sakila.* TO bdquest@localhost;
+mysql> flush privileges;
+
+mysql> SOURCE /home/ubuntu/sakila-db/sakila-schema.sql;
+mysql> SOURCE /home/ubuntu/sakila-db/sakila-data.sql;

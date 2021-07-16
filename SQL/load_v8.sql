@@ -3,11 +3,11 @@ bases de dades de treball
 bd (id_bd, bd, num_taules)
 #proposta d'exercicis sobre la base de dades de treball
 bd_questio (id_bd_questio, id_bd, questio, nivell, rollback, solucio)
-bd_questio_comprovacio (id_bd_questio, ordre, comprovacio)
+bd_questio_comprovacio (id_bd_questio_comprovacio, ordre, comprovacio)
 
 alumne (id_alumne, nom, cognoms, rol, curs, email)
 professor (id_professor, nom, cognoms, rol, curs, email)
-quest (id_quest, quest, dia, id_bd, random)
+quest (id_quest, quest, dia, id_bd, random, actiu)
 quest_detall (id_quest_detall, id_quest, id_bd_questio, num_pregunta)
 alumne_quest (id_alumne_quest, id_usuari, id_quest, dia, nota)
 alumne_quest_detall (id_alumne_quest_detall, id_alumne_quest, id_quest_detall, valor, resposta)
@@ -61,7 +61,8 @@ id_alumne smallint AUTO_INCREMENT PRIMARY KEY,
 nom VARCHAR(255) NOT NULL,
 cognoms VARCHAR(255) NOT NULL,
 curs VARCHAR(5) NULL,
-email VARCHAR(255) NOT NULL
+email VARCHAR(255) NOT NULL,
+actiu BOOLEAN
 );
 
 CREATE TABLE professor (
@@ -79,6 +80,7 @@ id_professor smallint,
 dia DATE NOT NULL,
 id_bd smallint,
 random BOOLEAN,
+actiu BOOLEAN,
 FOREIGN KEY(id_bd) REFERENCES bd(id_bd),
 FOREIGN KEY(id_professor) REFERENCES professor(id_professor)
 );
@@ -146,20 +148,21 @@ INSERT INTO bd_questio_comprovacio VALUES (13,2,'select * from municipis where m
 INSERT INTO bd_questio_comprovacio VALUES (13,3,'select id_prov, count(*) from municipis group by id_prov order by id_prov;');
 INSERT INTO bd_questio_comprovacio VALUES (14,1,'select id_prov, count(*) as num from provincies group by id_prov;');
 
-INSERT INTO alumne VALUES (1, 'Arnau', 'Riera', '1DAM', 'empresa@jaumebalmes.net');
-INSERT INTO alumne VALUES (2, 'Maria', 'Quintana', '1DAM', '20mquintan@jaumebalmes.net');
-INSERT INTO alumne VALUES (3, 'Clara', 'Ventura', '1DAM', 'clara@jaumebalmes.net');
-INSERT INTO alumne VALUES (4, 'Ramon', 'Rovira', '1DAM', 'rrovira@jaumebalmes.net');
+INSERT INTO alumne VALUES (1, 'Arnau', 'Riera', '1DAM', 'empresa@jaumebalmes.net',1);
+INSERT INTO alumne VALUES (2, 'Maria', 'Quintana', '1DAM', '20mquintan@jaumebalmes.net',1);
+INSERT INTO alumne VALUES (3, 'Clara', 'Ventura', '1DAM', 'clara@jaumebalmes.net',1);
+INSERT INTO alumne VALUES (4, 'Ramon', 'Rovira', '1DAM', 'rrovira@jaumebalmes.net',1);
+INSERT INTO alumne VALUES (5, 'Joan', 'Quintana', '1DAM', 'jquintana@jaumebalmes.net',0);
 
 INSERT INTO professor VALUES (1, 'Joan', 'Quintana', '1DAM', 'jquintana@jaumebalmes.net');
 INSERT INTO professor VALUES (2, 'Joan', 'Quintana', '1DAW', 'admin@jaumebalmes.net');
 
-INSERT INTO quest VALUES (1, 'bàsic municipis', 1, '2021-07-05', 1, 0);
-INSERT INTO quest VALUES (2, 'bàsic municipis 2', 1, '2021-07-05', 1, 1);
-INSERT INTO quest VALUES (3, 'bàsic sakila', 1, '2021-07-05', 2, 0);
-INSERT INTO quest VALUES (4, 'bàsic sakila 2', 1, '2021-07-05', 2, 1);
-INSERT INTO quest VALUES (5, 'bàsic DML municipis', 1, '2021-07-11', 1, 0);
-INSERT INTO quest VALUES (6, 'repàs municipis', 1, '2021-07-11', 1, 0);
+INSERT INTO quest VALUES (1, 'bàsic municipis', 1, '2021-07-05', 1, 0, 1);
+INSERT INTO quest VALUES (2, 'bàsic municipis 2', 1, '2021-07-05', 1, 1, 1);
+INSERT INTO quest VALUES (3, 'bàsic sakila', 1, '2021-07-05', 2, 0, 1);
+INSERT INTO quest VALUES (4, 'bàsic sakila 2', 1, '2021-07-05', 2, 1, 1);
+INSERT INTO quest VALUES (5, 'bàsic DML municipis', 1, '2021-07-11', 1, 0, 1);
+INSERT INTO quest VALUES (6, 'repàs municipis', 1, '2021-07-11', 1, 0, 1);
 
 INSERT INTO quest_detall VALUES (1, 1, 1, 1);
 INSERT INTO quest_detall VALUES (2, 1, 2, 2);

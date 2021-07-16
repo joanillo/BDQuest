@@ -1,3 +1,5 @@
+EN LOCAL
+--------------
 amb el compte de jquintana@jaumebalmes.net
 https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
 
@@ -12,3 +14,36 @@ secret: ZanVuybvtOh6QFQz-qmcQ2RM
 
 La solució està aquí:
 https://developers.google.com/identity/sign-in/web/sign-in
+
+EN EL SERVIDOR OVH
+-----------------
+amb el compte de jquintana@jaumebalmes.net
+https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
+
+Projecte nou: login bdquest js ovh
+Organización: jaumebalmes.net
+
+Anem al Panel, Credenciales
+Crear credenciales
+Crear ID de cliente de OAuth
+
+primer fem això de la pantalla de Consentimiento
+user type: interno
+Nombre aplicación: BDQuest
+Página principal: http://bdquest.joanillo.org/
+
+Agregar un dominio: jaumebalmes.net
+Agregar un dominio: joanillo.org
+
+Tipo aplicación: aplicación web
+Nombre: BDQuest
+
+Origenes autorizados de Javascript: http://bdquest.joanillo.org
+URI de redireccionamiento: no poso res
+
+ID cliente: 946494140989-d5sd7c1pma0ll4q80hgesk8tbd4ongbc.apps.googleusercontent.com
+secreto cliente: RrwlsWTTFhfi5LzWRG2DnxZX
+
+i el ID client l'hem de canviar en el index.html i en el professor.html
+
+

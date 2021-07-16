@@ -84,8 +84,27 @@ v8
 -en el codi js i php, usuari->alumne
 -Els usuaris només veuen els quests del seu curs (del seu professor)
 -ja podem fer informes (només visibles per als professors)
--TODO: estat d'un qüestionari: amagat, obert
--TODO: .gitignore
--TODO: bd_questio_comprovacio primary key hauria de ser id_bd_questio_comprovacio
--TODO: que jquintana@jaumebalmes.net pugui actuar amb rol d'alumne o de professor. Per fer-ho, puc controlar-ho amb la variable rol_mode, a PHP o en un camp de la bd
+-estat d'un qüestionari: actiu (1-true, 0-false)
+-.gitignore
+-que jquintana@jaumebalmes.net pugui actuar amb rol d'alumne o de professor. Per fer-ho, afegim el camp alumne.actiiu a la bd, per activar/desactivar els alumnes (i concretament, activar/desactivar el rol d'alumne, que aleshores fa de professor).
 
+Desplegament a OVH
+===================
+-crear i carregar la bd bdquest
+-crear i carregar les altres bd: municipis, sakila, langtrainer
+-Google OAuth2 que apunti a OVH: llegir_oauth_google.js
+-hem de posar el client_id a index.html i professor.html
+
+
+
+bdquest.joanillo.org
+--------------------
+cd ~/projectes/BDQuest/web/v8
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 777 /var/www/BDQuest/web'
+scp -r * ubuntu@vps-f5d83567.vps.ovh.net:/var/www/BDQuest/web
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 755 /var/www/BDQuest/web'
+
+TODO:
+mysql remot a ovh
+
+http://wiki.joanillo.org/index.php/Migraci%C3%B3_del_servidor_joanillo.org_a_OVH_Cloud_(n%C3%BAvol)#Desplegament_dels_projectes_a_OVH
