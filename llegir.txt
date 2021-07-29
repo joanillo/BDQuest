@@ -1,6 +1,6 @@
 solució per a ERROR 1698 (28000): Access denied for user 'root'@'localhost'
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'She4aiVa';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '*****';
 flush privileges
 
 Versió 1
@@ -98,3 +98,61 @@ en el fitxer fpdf.php:
 		elseif($align=='C')
 			$dx = ($w-$this->GetStringWidth($txt))/2;
 		else
+
+== HABILITAR CONNEXIONS REMOTES DEL MYSQL DE OVH ==
+Bind-address            = 127.0.0.1
+
+$ service mysql restart; (important!)
+
+CREATE USER 'bdquest'@'%' IDENTIFIED BY 'keiL2lai';
+GRANT ALL ON bdquest.* TO 'bdquest'@'%';
+flush privileges;
+
+
+mysql> SELECT User, Host FROM mysql.user;
+mysql -h 51.210.179.7 -u bdquest -pkeiL2lai bdquest
+mysql -h vps-f5d83567.vps.ovh.net -u bdquest -pkeiL2lai bdquest
+
+Hem d'accedir al firewall i permetre les connexions remotes pel port TCP/3306:
+OVH Control Panel:
+*https://www.ovh.com/auth/?action=gotomanager&from=https://www.ovh.co.uk/&ovhSubsidiary=GB
+*https://docs.ovh.com/gb/en/dedicated/firewall-network/
+
+Anem al dashboard > IP
+Veig que el firewall està desactivat. S'ha de crear un firewall, i configurar-lo
+
+Afegir una regla -> TCP 3306 permetre connexions remotes
+
+Per mirar si el port remot està obert podem fer des del portàtil:ç
+nc -zv 51.210.179.7 3306
+Connection to 51.210.179.7 3306 port [tcp/mysql] succeeded!
+
+
+Per exemple els ports 80 i 22 estan oberts per defecte: (en el portàtil)
+
+$ nc -zv 51.210.179.7 80
+Connection to 51.210.179.7 80 port [tcp/http] succeeded!
+
+$ nc -zv vps-f5d83567.vps.ovh.net 3306
+Connection to vps-f5d83567.vps.ovh.net 3306 port [tcp/mysql] succeeded!
+
+$ nc -zv 51.210.179.7 22
+Connection to 51.210.179.7 22 port [tcp/ssh] succeeded!
+
+netstat -plant|grep ":3306"|grep "LISTEN"
+
+En el servidor:
+# netstat -plant|grep ":3306"|grep "LISTEN"
+tcp6       0      0 :::33060                :::*                    LISTEN      3408250/mysqld      
+tcp6       0      0 :::3306                 :::*                    LISTEN
+
+
+Finalment ja funciona:
+$ mysql -h 51.210.179.7 -u bdquest -pkeiL2lai bdquest;
+$ mysql -h vps-f5d83567.vps.ovh.net -u bdquest -pkeiL2lai bdquest;
+
+Per tant resumint s'han de fer 3 coses:
+
+1. habilitar les connexions entrants en el mysql
+2. que l'usuari bdquest pugui realitzar connexions remotes
+3. que el servidor remot accepti connexions pel port 3306 (habilitar una regla del firewall)

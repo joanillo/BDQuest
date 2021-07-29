@@ -1,0 +1,19 @@
+Desplegament a OVH
+===================
+-crear i carregar la bd bdquest
+-crear i carregar les altres bd: municipis, sakila, langtrainer
+-Google OAuth2 que apunti a OVH: llegir_oauth_google.js
+-hem de posar el client_id a index.html i professor.html
+
+bdquest.joanillo.org
+--------------------
+cd ~/projectes/BDQuest/web/v8
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 777 /var/www/BDQuest/web'
+scp -r * ubuntu@vps-f5d83567.vps.ovh.net:/var/www/BDQuest/web
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 755 /var/www/BDQuest/web'
+
+TODO:
+mysql remot a ovh
+
+http://wiki.joanillo.org/index.php/Migraci%C3%B3_del_servidor_joanillo.org_a_OVH_Cloud_(n%C3%BAvol)#Desplegament_dels_projectes_a_OVH
+

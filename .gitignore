@@ -4,6 +4,6 @@ img/
 #fitxers del mysqsl-workbench
 *.mwb
 # Prevent users to commit password
-.pwd
+web/v9/php/.pwd
 # Temporary files
 *~

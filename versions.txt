@@ -88,23 +88,19 @@ v8
 -.gitignore
 -que jquintana@jaumebalmes.net pugui actuar amb rol d'alumne o de professor. Per fer-ho, afegim el camp alumne.actiiu a la bd, per activar/desactivar els alumnes (i concretament, activar/desactivar el rol d'alumne, que aleshores fa de professor).
 
-Desplegament a OVH
-===================
--crear i carregar la bd bdquest
--crear i carregar les altres bd: municipis, sakila, langtrainer
--Google OAuth2 que apunti a OVH: llegir_oauth_google.js
--hem de posar el client_id a index.html i professor.html
+v9
+=============
+-càrrega de la bd v9
+-canviem a SQL-92
+-disposem de la bd langtrainer
+-ja es poden fer exercicis amb CREATE, ALTER, DROP (el botó test està deshabilitat)
+-hem afegit una capa de seguretat per tal de què no es puguin fer inserts, deletes, updates, creates, alters fora del context
+-create table comarca: identificar l'objecte i posar comarca_xx (id de l'alumne). que valgui per create, drop, alter. Així no hi ha cap problema de concurrència entre companys, cada alumne treballa amb els seus objectes. Això només cal per DDL (create, alter, drop).
+-rollback pot agafar els valors 0 (selects), 1 (insert, update, delete), 2 (create, alter, drop)
+-els quests poden ser d'una sola pregunta
+-el pwd està en el fitxer ocult v9/php/.pwd
+-TODO: posar el diagrama
+-TODO: canvi de nom: BalmeSQL?
 
-
-
-bdquest.joanillo.org
---------------------
-cd ~/projectes/BDQuest/web/v8
-ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 777 /var/www/BDQuest/web'
-scp -r * ubuntu@vps-f5d83567.vps.ovh.net:/var/www/BDQuest/web
-ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 755 /var/www/BDQuest/web'
-
-TODO:
-mysql remot a ovh
-
-http://wiki.joanillo.org/index.php/Migraci%C3%B3_del_servidor_joanillo.org_a_OVH_Cloud_(n%C3%BAvol)#Desplegament_dels_projectes_a_OVH
+-TODO: refer el VIEW amb SQL92
+-TODO: passar totes les selects en els php a SQL92
