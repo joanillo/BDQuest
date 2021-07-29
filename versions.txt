@@ -99,8 +99,7 @@ v9
 -rollback pot agafar els valors 0 (selects), 1 (insert, update, delete), 2 (create, alter, drop)
 -els quests poden ser d'una sola pregunta
 -el pwd està en el fitxer ocult v9/php/.pwd
--TODO: posar el diagrama
+-posar el diagrama de relacions de les bd que es treballen.
 -TODO: canvi de nom: BalmeSQL?
-
 -TODO: refer el VIEW amb SQL92
 -TODO: passar totes les selects en els php a SQL92
