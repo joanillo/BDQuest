@@ -4,7 +4,7 @@ $email = $_POST['email'];
 include("open_db_bdquest.php");
 
 //només es carreguen els qüestionaris del grup a què pertany l'alumne
-$sql = "select id_quest, quest from alumne a, professor p, quest q where a.curs=p.curs and q.id_professor=p.id_professor and a.email='$email' and q.actiu=1 order by id_quest";
+$sql = "SELECT id_quest, quest FROM ((alumne a INNER JOIN professor p ON a.curs=p.curs) INNER JOIN quest q ON q.id_professor=p.id_professor) WHERE a.email='$email' AND q.actiu=1 ORDER BY id_quest";
 $resultset = mysqli_query($conn_bdquest,$sql);
 
 if (!$resultset) {

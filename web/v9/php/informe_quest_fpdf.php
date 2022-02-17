@@ -5,6 +5,7 @@ $id_alumne = $_GET['id_alumne'];
 //$id_quest = 1;
 //$id_alumne = 3;
 
+//la llibreria TCPDF és millor que FPDF
 require('./fpdf183/fpdf.php');
 
 class PDF extends FPDF
@@ -38,7 +39,7 @@ if (!$conn) {
 mysqli_select_db($conn,"bdquest") or die('Could not select bdquest database.');
 mysqli_set_charset($conn, 'utf8');
 
-$sql = "select * from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne)";
+$sql = "select * from informe_quest where id_quest=$id_quest and id_alumne=$id_alumne and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne)";
 
 $pdf = new PDF();
 

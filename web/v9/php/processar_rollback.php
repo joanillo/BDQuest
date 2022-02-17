@@ -29,7 +29,7 @@ mysqli_set_charset($conn, 'utf8');
 //poso en un array les comprovacions d'aquesta pregunta
 mysqli_select_db($conn,"bdquest") or die('Could not select bdquest database.');
 $arr_comprovacions = array();
-$resultset_comprovacions = mysqli_query($conn,"select comprovacio from quest_detall qd, bd_questio bdq, bd_questio_comprovacio bdqc where qd.id_bd_questio=bdq.id_bd_questio and bdq.id_bd_questio=bdqc.id_bd_questio and qd.id_quest=$id_quest and num_pregunta=$num_pregunta order by ordre");
+$resultset_comprovacions = mysqli_query($conn,"SELECT comprovacio FROM ((quest_detall qd INNER JOIN bd_questio bdq ON qd.id_bd_questio=bdq.id_bd_questio) INNER JOIN bd_questio_comprovacio bdqc ON bdq.id_bd_questio=bdqc.id_bd_questio) WHERE qd.id_quest=$id_quest and num_pregunta=$num_pregunta ORDER BY ordre");
 while($row = mysqli_fetch_array($resultset_comprovacions, MYSQLI_ASSOC)) {
     $arr_comprovacions[] = $row;
 }

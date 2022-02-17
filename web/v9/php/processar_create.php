@@ -44,7 +44,7 @@ mysqli_select_db($conn,"bdquest") or die('Could not select bdquest database.');
 
 //poso en un array les comprovacions PRE d'aquesta pregunta
 $arr_pres = array();
-$resultset_pres = mysqli_query($conn,"select sentencia_prepost from quest_detall qd, bd_questio bdq, bd_questio_prepost bdqp where qd.id_bd_questio=bdq.id_bd_questio and bdq.id_bd_questio=bdqp.id_bd_questio and qd.id_quest=$id_quest and num_pregunta=$num_pregunta and tipus='PRE' order by ordre");
+$resultset_pres = mysqli_query($conn,"SELECT sentencia_prepost FROM ((quest_detall qd INNER JOIN bd_questio bdq ON qd.id_bd_questio=bdq.id_bd_questio) INNER JOIN bd_questio_prepost bdqp ON bdq.id_bd_questio=bdqp.id_bd_questio) WHERE qd.id_quest=$id_quest and num_pregunta=$num_pregunta and tipus='PRE' order by ordre");
 while($row = mysqli_fetch_array($resultset_pres, MYSQLI_ASSOC)) {
     $arr_pres[] = $row;
 }
@@ -52,7 +52,7 @@ mysqli_free_result($resultset_pres);
 
 //poso en un array les comprovacions POST d'aquesta pregunta
 $arr_posts = array();
-$resultset_posts = mysqli_query($conn,"select sentencia_prepost from quest_detall qd, bd_questio bdq, bd_questio_prepost bdqp where qd.id_bd_questio=bdq.id_bd_questio and bdq.id_bd_questio=bdqp.id_bd_questio and qd.id_quest=$id_quest and num_pregunta=$num_pregunta and tipus='POST' order by ordre");
+$resultset_posts = mysqli_query($conn,"SELECT sentencia_prepost FROM ((quest_detall qd INNER JOIN bd_questio bdq ON qd.id_bd_questio=bdq.id_bd_questio) INNER JOIN bd_questio_prepost bdqp ON bdq.id_bd_questio=bdqp.id_bd_questio) WHERE qd.id_quest=$id_quest and num_pregunta=$num_pregunta and tipus='POST' ORDER BY ordre");
 while($row = mysqli_fetch_array($resultset_posts, MYSQLI_ASSOC)) {
     $arr_posts[] = $row;
 }

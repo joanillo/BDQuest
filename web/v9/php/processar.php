@@ -34,7 +34,7 @@ if (!$resultset_alumne) {
 	$resultat = 0;
 	//printf("Error: %s\n", mysqli_error($conn));
 	$data_alumne = "Error: ".mysqli_error($conn);
-} else if (gettype($resultset_alumne)=="boolean") { //si en comptes d'una select poso un insert, delete, etd, el resultset retorna boolean en comptes de object, que vol dir que la consulta no retorna el que s'espera
+} else if (gettype($resultset_alumne)=="boolean") { //si en comptes d'una select poso un insert, delete, etc, el resultset retorna boolean en comptes de object, que vol dir que la consulta no retorna el que s'espera
 	$resultat = 0;
 	$data_alumne = "Warning: la consulta no ha retornat el que s'espera";
 } else {

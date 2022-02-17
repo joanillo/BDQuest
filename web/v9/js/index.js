@@ -1,4 +1,4 @@
-var mode_developer = 0; //developer=1 (es proporciona la solució, que apareix en el textarea); developer=0 (és el mode normal per als alumnes)
+var mode_developer = 1; //developer=1 (es proporciona la solució, que apareix en el textarea); developer=0 (és el mode normal per als alumnes)
 
 var googleUser; // The current user.
 var email;
@@ -77,7 +77,7 @@ function processar() {
                     var cad = "No s'han retornat dades";
                     document.getElementById('sqloutput').innerHTML = cad;
                 } else {
-                    var tabla   = document.createElement("table");
+                    var taula   = document.createElement("table");
 
                     var tblHead = document.createElement("thead");
                     for (let x in arr[0]) {
@@ -86,27 +86,27 @@ function processar() {
                         celda.appendChild(textoCelda);
                         tblHead.appendChild(celda);
                     }
-                    tabla.appendChild(tblHead);
+                    taula.appendChild(tblHead);
 
                     var tblBody = document.createElement("tbody");
 
                     for (var i = 0; i < arr.length; i++) {
-                        var hilera = document.createElement("tr");
+                        var filera = document.createElement("tr");
                         for (let x in arr[0]) {
                             var celda = document.createElement("td");
                             var textoCelda = document.createTextNode(arr[i][x]);
                             celda.appendChild(textoCelda);
-                            hilera.appendChild(celda);
+                            filera.appendChild(celda);
                         }
 
-                        tblBody.appendChild(hilera);
+                        tblBody.appendChild(filera);
                     }
 
-                    tabla.appendChild(tblBody);
-                    tabla.setAttribute("border", "1");
+                    taula.appendChild(tblBody);
+                    taula.setAttribute("border", "1");
 
                     document.getElementById('sqloutput').innerHTML = "";
-                    document.getElementById('sqloutput').appendChild(tabla);
+                    document.getElementById('sqloutput').appendChild(taula);
                 }
             }
             if (num_pregunta<num_preguntes) {
@@ -207,7 +207,7 @@ function processar_test() {
                     var cad = "No s'han retornat dades";
                     document.getElementById('sqloutput').innerHTML = cad;
                 } else {
-                    var tabla   = document.createElement("table");
+                    var taula   = document.createElement("table");
 
                     var tblHead = document.createElement("thead");
                     for (let x in arr[0]) {
@@ -216,27 +216,27 @@ function processar_test() {
                         celda.appendChild(textoCelda);
                         tblHead.appendChild(celda);
                     }
-                    tabla.appendChild(tblHead);
+                    taula.appendChild(tblHead);
 
                     var tblBody = document.createElement("tbody");
 
                     for (var i = 0; i < arr.length; i++) {
-                        var hilera = document.createElement("tr");
+                        var filera = document.createElement("tr");
                         for (let x in arr[0]) {
                             var celda = document.createElement("td");
                             var textoCelda = document.createTextNode(arr[i][x]);
                             celda.appendChild(textoCelda);
-                            hilera.appendChild(celda);
+                            filera.appendChild(celda);
                         }
 
-                        tblBody.appendChild(hilera);
+                        tblBody.appendChild(filera);
                     }
 
-                    tabla.appendChild(tblBody);
-                    tabla.setAttribute("border", "1");
+                    taula.appendChild(tblBody);
+                    taula.setAttribute("border", "1");
 
                     document.getElementById('sqloutput').innerHTML = "";
-                    document.getElementById('sqloutput').appendChild(tabla);
+                    document.getElementById('sqloutput').appendChild(taula);
                 }
             }
         } else {

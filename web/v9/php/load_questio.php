@@ -7,7 +7,7 @@ $num_pregunta = $_POST['num_pregunta'];
 //echo $id_quest;
 //echo $num_pregunta;
 
-$sql = "select id_quest_detall, bd, questio, rollback, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=".$id_quest." and num_pregunta=".$num_pregunta;
+$sql = "SELECT id_quest_detall, bd, questio, rollback, solucio FROM ((quest_detall qd INNER JOIN bd_questio bdq ON qd.id_bd_questio=bdq.id_bd_questio) INNER JOIN bd ON bd.id_bd=bdq.id_bd) WHERE id_quest=".$id_quest." and num_pregunta=".$num_pregunta;
 
 //echo $sql;
 

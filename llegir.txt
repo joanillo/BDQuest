@@ -156,3 +156,13 @@ Per tant resumint s'han de fer 3 coses:
 1. habilitar les connexions entrants en el mysql
 2. que l'usuari bdquest pugui realitzar connexions remotes
 3. que el servidor remot accepti connexions pel port 3306 (habilitar una regla del firewall)
+
+===
+Nota 22/12/2021
+El qüestionari 'langtrainer: insert, update, delete', compte! perquè els alumnes estan treballant amb la base de dades real.
+Si hi hagués algun problema, es podria malmetre la bd. 
+
+Les noves dades que tinc introduïdes són:
+1450. stiple: puntejar
+
+Si introdueixo noves dades, per tal de què funcionin les preguntes 2 i 3 s'haurà de canviar el index.

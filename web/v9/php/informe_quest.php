@@ -12,7 +12,7 @@ if (!$conn) {
 mysqli_select_db($conn,"bdquest") or die('Could not select bdquest database.');
 mysqli_set_charset($conn, 'utf8');
 
-$sql = "select * from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne)";
+$sql = "select * from informe_quest where id_quest=$id_quest and id_alumne=$id_alumne and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=$id_quest and  id_alumne=$id_alumne)";
 
 
 $resultset = mysqli_query($conn,$sql);

@@ -114,8 +114,7 @@ FOREIGN KEY(id_alumne_quest) REFERENCES alumne_quest(id_alumne_quest),
 FOREIGN KEY(id_quest_detall) REFERENCES quest_detall(id_quest_detall)
 );
 
-CREATE VIEW informe_quest AS (select q.id_quest, a.id_alumne, aq.id_alumne_quest, aq.dia, quest, nom, cognoms, nota, questio, valor, resposta, solucio from alumne a, alumne_quest aq, quest q, alumne_quest_detall aqd, quest_detall qd, bd_questio bdq where a.id_alumne=aq.id_alumne and q.id_quest=aq.id_quest and aq.id_alumne_quest=aqd.id_alumne_quest and aqd.id_quest_detall=qd.id_quest_detall and bdq.id_bd_questio=qd.id_bd_questio and qd.id_bd_questio=bdq.id_bd_questio);
-
+CREATE VIEW informe_quest AS (select q.id_quest, a.id_alumne, aq.id_alumne_quest, aq.dia, quest, nom, cognoms, nota, questio, valor, resposta, solucio from alumne a, alumne_quest aq, quest q, alumne_quest_detall aqd, quest_detall qd, bd_questio bdq where a.id_alumne=aq.id_alumne and q.id_quest=aq.id_quest and aq.id_alumne_quest=aqd.id_alumne_quest and aqd.id_quest_detall=qd.id_quest_detall and bdq.id_bd_questio=qd.id_bd_questio);
 
 INSERT INTO bd VALUES (1,'municipis',3);
 INSERT INTO bd VALUES (2,'sakila',23);
