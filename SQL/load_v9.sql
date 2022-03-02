@@ -29,6 +29,7 @@ alumne_quest_detall (id_alumne_quest_detall, id_alumne_quest, id_quest_detall, v
 # GRANT ALL ON sakila.* TO bdquest@localhost;
 # GRANT ALL ON langtrainer.* TO bdquest@localhost;
 # GRANT ALL ON northwind.* TO bdquest@localhost;
+# GRANT ALL ON empresa.* TO bdquest@localhost;
 # flush privileges
 
 DROP VIEW IF EXISTS informe_quest;
@@ -134,8 +135,7 @@ FOREIGN KEY(id_alumne_quest) REFERENCES alumne_quest(id_alumne_quest),
 FOREIGN KEY(id_quest_detall) REFERENCES quest_detall(id_quest_detall)
 );
 
-CREATE VIEW informe_quest AS (select q.id_quest, a.id_alumne, aq.id_alumne_quest, aq.dia, quest, nom, cognoms, nota, questio, valor, resposta, solucio from alumne a, alumne_quest aq, quest q, alumne_quest_detall aqd, quest_detall qd, bd_questio bdq where a.id_alumne=aq.id_alumne and q.id_quest=aq.id_quest and aq.id_alumne_quest=aqd.id_alumne_quest and aqd.id_quest_detall=qd.id_quest_detall and bdq.id_bd_questio=qd.id_bd_questio and qd.id_bd_questio=bdq.id_bd_questio);
-
+CREATE VIEW informe_quest AS (SELECT q.id_quest, a.id_alumne, aq.id_alumne_quest, aq.dia, quest, nom, cognoms, nota, questio, valor, resposta, solucio FROM (((((alumne a INNER JOIN alumne_quest aq ON a.id_alumne=aq.id_alumne) INNER JOIN quest q ON q.id_quest=aq.id_quest) INNER JOIN alumne_quest_detall aqd ON aq.id_alumne_quest=aqd.id_alumne_quest) INNER JOIN quest_detall qd ON aqd.id_quest_detall=qd.id_quest_detall) INNER JOIN bd_questio bdq ON bdq.id_bd_questio=qd.id_bd_questio));
 
 INSERT INTO bd VALUES (1,'municipis',3);
 INSERT INTO bd VALUES (2,'sakila',23);
@@ -167,7 +167,7 @@ INSERT INTO bd_questio_comprovacio VALUES (10,2,'select count(*) from municipis'
 INSERT INTO bd_questio_comprovacio VALUES (11,1,'select count(*) from municipis where id_prov=3');
 INSERT INTO bd_questio_comprovacio VALUES (11,2,'select count(*) from municipis where id_prov=25');
 INSERT INTO bd_questio_comprovacio VALUES (12,1,'select count(*) from municipis where id_prov=3');
-INSERT INTO bd_questio_comprovacio VALUES (12,2,'select count(*) from municipis where id_prov=25');
+INSERT INTO bd_questio_comprovacio VALUES (12,2,'select count(*) from municipis where id_prov=46');
 INSERT INTO bd_questio_comprovacio VALUES (13,1,'select count(*) from municipis where id_prov=17');
 INSERT INTO bd_questio_comprovacio VALUES (13,2,'select * from municipis where municipi like ''A%'' and id_prov=17 order by id_mun');
 INSERT INTO bd_questio_comprovacio VALUES (13,3,'select id_prov, count(*) from municipis group by id_prov order by id_prov');
@@ -309,19 +309,25 @@ UPDATE alumne_quest SET nota=6.0 where id_alumne_quest=10;
 /*
 # informe del id_quest=1
 #persones que han realitzat aquest quest:
-select nom, cognoms, uq.id_quest, nota from usuari u, alumne_quest uq where u.id_usuari=uq.id_usuari and uq.id_quest=1 order by cognoms;
+select nom, cognoms, aq.id_quest, nota from alumne a, alumne_quest aq where a.id_alumne=aq.id_alumne and aq.id_quest=1 order by cognoms;
+
+# informe del id_quest=1 (i que l'han acabat)
+#persones que han realitzat aquest quest:
+select nom, cognoms, aq.id_quest, nota from alumne a, alumne_quest aq where a.id_alumne=aq.id_alumne and aq.id_quest=1 and nota is not null order by cognoms;
+
+# informe dels alumnes que han fet (i acabat) el id_quest=1
+select distinct nom, cognoms, aq.id_quest from alumne a, alumne_quest aq where a.id_alumne=aq.id_alumne and aq.id_quest=1 and nota is not null order by cognoms;
 
 #Resum qüestionari id_quest=1 and id_usuari=3:
-select quest, uq.id_alumne_quest, uq.dia, nom, cognoms, nota, questio, valor, resposta, solucio from usuari u, alumne_quest uq, quest q, alumne_quest_detall uqd, quest_detall qd, bd_questio bdq where u.id_usuari=uq.id_usuari and q.id_quest=uq.id_quest and uq.id_alumne_quest=uqd.id_alumne_quest and uqd.id_quest_detall=qd.id_quest_detall and bdq.id_bd_questio=qd.id_bd_questio and qd.id_bd_questio=bdq.id_bd_questio and q.id_quest=1 and  u.id_usuari=3 order by cognoms;
+select quest, aq.id_alumne_quest, aq.dia, nom, cognoms, nota, questio, valor, resposta, solucio from alumne a, alumne_quest aq, quest q, alumne_quest_detall aqd, quest_detall qd, bd_questio bdq where a.id_alumne=aq.id_alumne and q.id_quest=aq.id_quest and aq.id_alumne_quest=aqd.id_alumne_quest and aqd.id_quest_detall=qd.id_quest_detall and bdq.id_bd_questio=qd.id_bd_questio and qd.id_bd_questio=bdq.id_bd_questio and q.id_quest=1 and  a.id_alumne=3 order by cognoms;
 o bé:
-select * from informe_quest where id_quest=1 and  id_usuari=3 order by cognoms, dia desc;
-select * from informe_quest where id_quest=1 and  id_usuari=3 and id_alumne_quest=14 order by cognoms, dia desc;
+select * from informe_quest where id_quest=1 and  id_alumne=3 order by cognoms, dia desc;
+select * from informe_quest where id_quest=1 and  id_alumne=3 and id_alumne_quest=14 order by cognoms, dia desc;
 //l'alumne pot haver fet vàries vegades el qüestionari, i per tant hem d'agafar l'últim que ha realitzat
-select * from informe_quest where id_quest=1 and  id_usuari=3 and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=1 and  id_usuari=3);
-select * from informe_quest where id_quest=1 and  id_usuari=3 and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=1 and  id_usuari=3);
+select * from informe_quest where id_quest=1 and  id_alumne=3 and id_alumne_quest=(select max(id_alumne_quest) from informe_quest where id_quest=1 and  id_alumne=3);
 
 # alumnes del professor jquintana@jaumebalmes.net (el professor és de 1DAM i els seus alumnes són 1DAM)
-select * from usuari u where curs=(select curs from usuari where email='jquintana@jaumebalmes.net') and email!='jquintana@jaumebalmes.net';
+select * from alumne a where curs=(select curs from alumne where email='jquintana@jaumebalmes.net') and email NOT IN ('jquintana@jaumebalmes.net','empresa@jaumebalmes.net') order by cognoms;
 
 #(outer join) quests que ha fet el professor jquintana@jaumebalmes.net, agrupat per número d'alumnes que l'ha contestat
 select q.id_quest, quest, count(id_alumne) as num from (alumne_quest aq right outer join quest q on q.id_quest=aq.id_quest), professor p where q.id_professor=p.id_professor and email='jquintana@jaumebalmes.net' group by q.id_quest;

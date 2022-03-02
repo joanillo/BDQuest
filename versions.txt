@@ -100,6 +100,49 @@ v9
 -els quests poden ser d'una sola pregunta
 -el pwd està en el fitxer ocult v9/php/.pwd
 -posar el diagrama de relacions de les bd que es treballen.
+-refer el VIEW amb SQL92
+-passar totes les selects en els php a SQL92
+-catalanitzar el tabla i hilera
+-esborrem open.php i close.php?
+-canvi de logo en l'informe
 -TODO: canvi de nom: BalmeSQL?
--TODO: refer el VIEW amb SQL92
--TODO: passar totes les selects en els php a SQL92
+
+v10
+=============
+-Primera versió en producció, curs 21-22 (1r DAM INS Jaume Balmes de Barcelona) (els alumnes ho testegen)
+-càrrega de la bd v10
+-name="google-signin-client_id". Detectem si estem en localhost o en el servidor. Això ho hem de fer al principi de tot (en el head de index.html i professor.html) (no ho podem posar en el onload, perquè aleshores ja s'ha carregat tota la pàgina i malament rai).
+-posem el correcte/incorrecte en color blau/vermell, i més gros.
+-encodeURIComponent() per tal de que funcionin correctament les consultes que tenen LIKE '%%'
+-Resolt el problema dels àlies dels camps. A processar.php (i processar_test.php) canvio mysqli_fetch_array per mysqli_fetch_row, i afegeixo head en el json que s'envia al frontend (també implica canvis a processar() i processar_test()).
+-Els enunciats i les solucions poden contenir retorns de carro (\n)
+-Hi ha un petit error quan selecciono la casella buida de la selectbox. Solucionat.
+-falla per culpa del distinct (molt raro, només falla a l'institut): SELECT employee_id, first_name, last_name, salary FROM employees WHERE department_id = (SELECT distinct department_id FROM departments limit 1)
+-mode_examen = 1 o 0 per tal de confirmar la pregunta abans d'enviar.
+-Si la resposta està bé, que també puguin comparar la seva resposta amb la resposta proposada
+-guardar també l'hora que s'ha fet el test (timestamp). Útil per quan es fa un examen i veure si s'han fet vàries intentones. He canviat en el camp alumne_quest.dia el tipus DATE per DATETIME.
+-NOTA: recordar que en un examen, barrejar les preguntes amb el camp random
+-create USER, DROP USER. He de donar permisos al bdquest sobre la taula mysql.
+-També hem de donar permisos a l'usuari bdquest amb l'opció  WITH GRANT OPTION, per tal de poder executar les sentències GRANT.
+-GRANT PERMISOS
+-implemento PROCEDURES
+-Eliminem el camp quest.id_bd (no cal). Un quest pot contenir preguntes provinents de diferents bd. Per eliminar la taula en producció, he fet:
+	SET foreign_key_checks = 0;
+	drop table quest;
+	create table quest (sense el camp id_bd)
+	inserts into quest (sense el camp id_bd)
+	SET foreign_key_checks = 1;
+-En els fitxers pdf que no surtin caràcters estranys tipus informe-16-AdriÃ _JimÃ©nez-11-02-2022.pdf
+
+TODO
+=====
+
+Aquests dos no funcionen:
+En la taula PARAULA, afegir el camp definicio (varchar 255) després de paraula, i eliminar el camp num_cars (en una sola sentència)
+168 -> 166
+update quest_detall set id_bd_questio=166 where id_quest_detall = 252;
+INSERT INTO bd_questio VALUES (174, 11, 'Elimina la vista informe',1,2,'DROP VIEW informe');
+164 -> 175
+update quest_detall set id_bd_questio=175 where id_quest_detall = 253;
+
+

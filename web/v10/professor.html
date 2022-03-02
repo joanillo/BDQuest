@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+<meta charset="utf-8"></meta>
+<title>BDQuest (professor)</title>
+<link rel="stylesheet" href="./css/style.css">
+<script src="./js/index_professor.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<!-- el id és diferent si estic a localhost o al servidor. El condicional està a index.js, que canvia aquest valor del meta -->
+<meta name="google-signin-client_id" content="369980418925-tkatmh1aqt2otkccib6gueovoq5pi35e.apps.googleusercontent.com">
+<!-- <meta name="google-signin-client_id" content="946494140989-d5sd7c1pma0ll4q80hgesk8tbd4ongbc.apps.googleusercontent.com">-->
+<script>
+	//canviem el meta
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        document.querySelector('meta[name="google-signin-client_id"]').setAttribute("content", "369980418925-tkatmh1aqt2otkccib6gueovoq5pi35e.apps.googleusercontent.com");
+    } else { // servidor OVH
+        document.querySelector('meta[name="google-signin-client_id"]').setAttribute("content", "946494140989-d5sd7c1pma0ll4q80hgesk8tbd4ongbc.apps.googleusercontent.com");
+    }
+</script>
+</head>
+<body>
+
+<div id="email" class="login"></div>
+<div class="g-signin2" data-theme="dark" data-onsuccess="onSignIn"></div>
+
+<h1>BDQuest (professor)</h1>
+
+<div id="sel_alumnes">
+	<label>Alumnes:</label><br />
+</div><br />
+<div id="sel_questionaris">
+	<label>Qüestionaris:</label><br />
+</div>
+<div id="titol"></div>
+<div id="llista"></div>
+
+
+</body>
+</html>

@@ -47,3 +47,25 @@ secreto cliente: RrwlsWTTFhfi5LzWRG2DnxZX
 i el ID client l'hem de canviar en el index.html i en el professor.html
 
 
+====
+Actualització Febrer 2022
+He instal·lat el certificat SSL en el servidor (certbot), i el primer que ha passat és que
+
+https://bdquest.joanillo.org
+
+ha deixat de funcionar l'autenticació. He de canviar les referències de http per https.
+
+Però m'he trobat que:
+
+No tienes acceso a Google Developers. Inicia sesión en la consola de administración para habilitar Google Developers. Más información
+
+https://admin.google.com/
+m'ha costat una mica de trobar, però ja tinc activat el Google Developers (captura de pantalla)
+
+i ara ja puc entrar a:
+
+https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
+
+i canviar les referències de http://bdquest.joanillo.org per https://bdquest.joanillo.org
+
+i ja funciona (després d'esperar uns minuts, i netejar la cache del navegador).

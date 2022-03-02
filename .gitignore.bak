@@ -1,9 +1,0 @@
-todo.txt
-llegir.txt
-img/
-#fitxers del mysqsl-workbench
-*.mwb
-# Prevent users to commit password
-web/v9/php/.pwd
-# Temporary files
-*~
