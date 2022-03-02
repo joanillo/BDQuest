@@ -137,12 +137,21 @@ v10
 TODO
 =====
 
-Aquests dos no funcionen:
-En la taula PARAULA, afegir el camp definicio (varchar 255) després de paraula, i eliminar el camp num_cars (en una sola sentència)
-168 -> 166
-update quest_detall set id_bd_questio=166 where id_quest_detall = 252;
-INSERT INTO bd_questio VALUES (174, 11, 'Elimina la vista informe',1,2,'DROP VIEW informe');
-164 -> 175
-update quest_detall set id_bd_questio=175 where id_quest_detall = 253;
+-JSDoc
+
+TODO Github (mirar la palma)
+-------------
+implementar el .gitignore
+eliminar el php/.pwd (posar a les instruccions que ha d'existir aquest fitxer)
+fitxers ~
+captures_de_pantalla/
+img/
+llegir*
+desplegament*
+SQL/ -> només ha d'haver-hi load_v10.sql
+web/ -> només ha d'haver-hi v10/
+
+posar en el README la informació també en anglès
+
 
 

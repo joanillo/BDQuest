@@ -126,7 +126,11 @@ foreach ($arr_posts as $sql_post) {
 	//NOU. Podem mirar què hi ha dins en cas de què sigui una select. Mirem la primera línia (cas select @level en els procediments)
 	//a partir d'aquí es pot fer més complet i mirar més línies o totes les línies
 	if (strrpos(strtolower($sql), "select")===0) {
-		$data_solucio.=json_encode(mysqli_fetch_array($resultset));
+		if ($resultset) {
+			$data_solucio.=json_encode(mysqli_fetch_array($resultset));
+		} else {
+			$data_solucio.="NULL";			
+		}
 	}
 }
 
@@ -156,7 +160,11 @@ foreach ($arr_posts as $sql_post) {
 	//NOU. Podem mirar què hi ha dins en cas de què sigui una select. Mirem la primera línia (cas select @level en els procediments)
 	//a partir d'aquí es pot fer més complet i mirar més línies o totes les línies
 	if (strrpos(strtolower($sql), "select")===0) {
-		$data_alumne.=json_encode(mysqli_fetch_array($resultset));
+		if ($resultset) {
+			$data_alumne.=json_encode(mysqli_fetch_array($resultset));
+		} else {
+			$data_alumne.="NULL";			
+		}
 	}
 }
 

@@ -2,11 +2,19 @@
 
 Desplegament a OVH
 ===================
--crear i carregar la bd englishresources
+Mirar instruccions.txt
 
-englishresources.joanillo.org
-----------------------------
-cd ~/projectes/EnglishResouorces/web/v3
-ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 777 /var/www/EnglishResouorces/web'
-scp -r * ubuntu@vps-f5d83567.vps.ovh.net:/var/www/EnglishResouorces/web
-ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 755 /var/www/EnglishResouorces/web'
+bdquest.joanillo.org
+--------------------
+cd ~/projectes/BDQuest/web/v10
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 777 /var/www/BDQuest/web'
+scp -r * ubuntu@vps-f5d83567.vps.ovh.net:/var/www/BDQuest/web
+ssh ubuntu@vps-f5d83567.vps.ovh.net -f 'sudo chmod -R 755 /var/www/BDQuest/web'
+
+xuleta Github
+=============
+git add .
+git commit -m "220217"
+git branch -M main
+git push -u origin main
+
