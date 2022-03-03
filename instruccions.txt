@@ -8,3 +8,7 @@ Per canviar l'usuari jquintana@jaumebalmes.net al rol d'alumne (1) o professor (
 mysql -u bdquest -pkeiL2lai -e "update alumne set actiu=1 where email='jquintana@jaumebalmes.net'" bdquest
 
 Com es crea un qüestionari
+
+
+documentar oauth2 i com s'amaga el password en el script js/pwd.js
+amagar el password de la base de dades a php/.pwd

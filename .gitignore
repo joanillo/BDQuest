@@ -33,6 +33,7 @@ web/v8
 web/v9
 web/v10/*.*~
 web/v10/php/*.*~
+web/v10/js/pwd.js
 web/v10/php/.pwd
 web/v10/js/*.*~
 web/v10/css/*.*~
