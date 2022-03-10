@@ -8,6 +8,14 @@ pre {
 	background-color: #cccccc;
 }
 
+pre.correcta {
+	background-color: #33955a;
+}
+
+pre.incorrecta {
+	background-color: #ef004b;
+}
+
 div.login{
 	position: absolute;
 	left: 140px;

@@ -1,12 +1,34 @@
-/*
-BDQuest v10 (GPLv3)
-@ Joan Quintana - 2021-2022
-https://wiki.joanillo.org/index.php/BDQuest
-*/
-//variables globals
-const mode_developer = 0; //developer=1 (es proporciona la solució, que apareix en el textarea); developer=0 (és el mode normal per als alumnes)
-const mode_examen = 0; // s'ha de confirmar la pregunta abans d'enviar
-const num_versions_examen = 2; //només s'aplica en mode_examen. Allò normal és fer dues versions, però també se'n poder fer tres o més.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//variables globals
+const mode_developer = 1; //developer=1 (es proporciona la solució, que apareix en el textarea); developer=0 (és el mode normal per als alumnes)
+var mode_examen = 0; // s'ha de confirmar la pregunta abans d'enviar
 
 var googleUser; // The current user.
 var email;
@@ -35,17 +57,15 @@ function init() {
     document.getElementById("test").addEventListener("click", function(){processar_test()});
     //document.getElementById("solucio").style.display = (mode_developer==0) ? "none" : "block";
     document.getElementById("solucio").style.display = "none";
-    if (!mode_examen) {
-        document.getElementById("informe").addEventListener("click", function(){informe_quest()});
-        document.getElementById("dinforme").addEventListener("click", function(){descarregar_informe()});
-    }
+    document.getElementById("informe").addEventListener("click", function(){informe_quest()});
+    document.getElementById("dinforme").addEventListener("click", function(){descarregar_informe()});
 }
 
 /**
 * S'executa quan enviem una pregunta a processar
 */
 function processar() {
-    if (mode_examen && !window.confirm("Enviar?")) {
+    if (mode_examen &amp;&amp; !window.confirm("Enviar?")) {
         return;
     }
     //cas general
@@ -63,21 +83,21 @@ function processar() {
     if (arr_sql_alumne[0].toLowerCase() != arr_solucio[0].toLowerCase()) {
         alert('La solució ha de ser un ' + arr_solucio[0].toUpperCase());
         return;
-    } else if (arr_solucio[0].toLowerCase()=="create" && arr_solucio[1].toLowerCase()=="table" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    } else if (arr_solucio[0].toLowerCase()=="create" &amp;&amp; arr_solucio[1].toLowerCase()=="table" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
     //cas específic CREATE TABLE xxx, ALTER
         alert('PISTA: CREATE TABLE ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="alter" && arr_solucio[1].toLowerCase()=="table" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    }  else if (arr_solucio[0].toLowerCase()=="alter" &amp;&amp; arr_solucio[1].toLowerCase()=="table" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: ALTER TABLE ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="drop" && arr_solucio[1].toLowerCase()=="drop" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    }  else if (arr_solucio[0].toLowerCase()=="drop" &amp;&amp; arr_solucio[1].toLowerCase()=="drop" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: DROP TABLE ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="create" && arr_solucio[1].toLowerCase()=="user" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    }  else if (arr_solucio[0].toLowerCase()=="create" &amp;&amp; arr_solucio[1].toLowerCase()=="user" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: CREATE USER ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="drop" && arr_solucio[1].toLowerCase()=="user" && ((arr_sql_alumne[0]+arr_sql_alumne[1]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]).toLowerCase())) {
-        alert('PISTA: DROP USER');
+    }  else if (arr_solucio[0].toLowerCase()=="drop" &amp;&amp; arr_solucio[1].toLowerCase()=="user" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+        alert('PISTA: DROP USER ' + arr_solucio[2]);
         return;
     }      
 
@@ -86,7 +106,7 @@ function processar() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //alert(json_obj)
             //console.log(json_obj);
@@ -95,10 +115,8 @@ function processar() {
             //console.log(obj)
             var nota = obj.nota;
             var resultat = obj.resultat;
-            if (!mode_examen) {
-                document.getElementById('rubrica').innerHTML = (resultat==1)?"Correcte":"Incorrecte";
-                document.getElementById('rubrica').style.color = (resultat==1)?"blue":"red";
-            }
+            document.getElementById('rubrica').innerHTML = (resultat==1)?"Correcte":"Incorrecte";
+            document.getElementById('rubrica').style.color = (resultat==1)?"blue":"red";
             current_id_alumne_quest = obj.last_id;
 
             if (obj.data.indexOf("Error")==0 || obj.data.indexOf("Warning")==0 || obj.data.indexOf("Notice")==0 || obj.data.indexOf("Affected")==0 || obj.data.indexOf("OK")==0 || obj.data.indexOf("INCORRECTE")==0) {
@@ -124,7 +142,7 @@ function processar() {
 
                     var tblBody = document.createElement("tbody");
 
-                    for (var i = 0; i < arr.length; i++) {
+                    for (var i = 0; i &lt; arr.length; i++) {
                         var filera = document.createElement("tr");
                         for (let x in arr[0]) {
                             var cella = document.createElement("td");
@@ -143,7 +161,7 @@ function processar() {
                     document.getElementById('sqloutput').appendChild(taula);
                 }
             }
-            if (num_pregunta<num_preguntes) {
+            if (num_pregunta&lt;num_preguntes) {
                 document.getElementById('pregunta_seguent').disabled = false;
                 document.getElementById('envia').disabled = true;
                 //document.getElementById('test').disabled = false;
@@ -152,13 +170,13 @@ function processar() {
                 }
             } else {
                 document.getElementById('envia').disabled = true;
-                if (!mode_examen) document.getElementById('nota').innerHTML = "Nota: " + nota;
+                document.getElementById('nota').innerHTML = "Nota: " + nota;
                 document.getElementById('informe').disabled = false;
                 document.getElementById('dinforme').disabled = false;  
             }
         
         } else {
-            document.getElementById('sqloutput').innerHTML = "<img src=\"img/ajax_wait.gif\" />";
+            document.getElementById('sqloutput').innerHTML = "&lt;img src=\"img/ajax_wait.gif\" />";
         }
     }
 
@@ -191,7 +209,7 @@ function processar() {
     //alert(id_quest)
     //alert(arr_preguntes[num_pregunta-1])
     //necessari posar encodeURIComponent() degut al caràcter especial quan tinc sentències SQL com ara like '%ca%'
-    xmlhttp.send("bd=" + document.forms[0].bd.value + "&solucio=" + encodeURIComponent(document.forms[0].solucio.value) + "&sql_alumne=" + encodeURIComponent(document.forms[0].sql_alumne.value) + "&id_quest=" + id_quest + "&num_pregunta=" + arr_preguntes[num_pregunta-1] + "&estat_quest=" + estat_quest + "&current_id_alumne_quest=" + current_id_alumne_quest + "&id_alumne=" + id_alumne);
+    xmlhttp.send("bd=" + document.forms[0].bd.value + "&amp;solucio=" + encodeURIComponent(document.forms[0].solucio.value) + "&amp;sql_alumne=" + encodeURIComponent(document.forms[0].sql_alumne.value) + "&amp;id_quest=" + id_quest + "&amp;num_pregunta=" + arr_preguntes[num_pregunta-1] + "&amp;estat_quest=" + estat_quest + "&amp;current_id_alumne_quest=" + current_id_alumne_quest + "&amp;id_alumne=" + id_alumne);
 }
 
 /**
@@ -214,20 +232,20 @@ function processar_test() {
     if (arr_sql_alumne[0].toLowerCase() != arr_solucio[0].toLowerCase()) {
         alert('La solució ha de ser un ' + arr_solucio[0].toUpperCase());
         return;
-    } else if (arr_solucio[0].toLowerCase()=="create" && arr_solucio[1].toLowerCase()=="table" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    } else if (arr_solucio[0].toLowerCase()=="create" &amp;&amp; arr_solucio[1].toLowerCase()=="table" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
     //cas específic CREATE TABLE xxx, ALTER
         alert('PISTA: CREATE TABLE ' + arr_solucio[2]);
         return;
-    } else if (arr_solucio[0].toLowerCase()=="alter" && arr_solucio[1].toLowerCase()=="table" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    } else if (arr_solucio[0].toLowerCase()=="alter" &amp;&amp; arr_solucio[1].toLowerCase()=="table" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: ALTER TABLE ' + arr_solucio[2]);
         return;
-    } else if (arr_solucio[0].toLowerCase()=="drop" && arr_solucio[1].toLowerCase()=="table" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    } else if (arr_solucio[0].toLowerCase()=="drop" &amp;&amp; arr_solucio[1].toLowerCase()=="table" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: DROP TABLE ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="create" && arr_solucio[1].toLowerCase()=="user" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    }  else if (arr_solucio[0].toLowerCase()=="create" &amp;&amp; arr_solucio[1].toLowerCase()=="user" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: CREATE USER ' + arr_solucio[2]);
         return;
-    }  else if (arr_solucio[0].toLowerCase()=="drop" && arr_solucio[1].toLowerCase()=="user" && ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
+    }  else if (arr_solucio[0].toLowerCase()=="drop" &amp;&amp; arr_solucio[1].toLowerCase()=="user" &amp;&amp; ((arr_sql_alumne[0]+arr_sql_alumne[1]+arr_sql_alumne[2]).toLowerCase() != (arr_solucio[0]+arr_solucio[1]+arr_solucio[2]).toLowerCase())) {
         alert('PISTA: DROP USER ' + arr_solucio[2]);
         return;
     }
@@ -236,7 +254,7 @@ function processar_test() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //alert(json_obj)
             //console.log(json_obj)
@@ -265,7 +283,7 @@ function processar_test() {
 
                     var tblBody = document.createElement("tbody");
 
-                    for (var i = 0; i < arr.length; i++) {
+                    for (var i = 0; i &lt; arr.length; i++) {
                         var filera = document.createElement("tr");
                         for (let x in arr[0]) {
                             var cella = document.createElement("td");
@@ -285,7 +303,7 @@ function processar_test() {
                 }
             }
         } else {
-            document.getElementById('sqloutput').innerHTML = "<img src=\"img/ajax_wait.gif\" />";
+            document.getElementById('sqloutput').innerHTML = "&lt;img src=\"img/ajax_wait.gif\" />";
         }
     }
 
@@ -302,7 +320,7 @@ function processar_test() {
     xmlhttp.open("POST","./php/" + script,true)
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    xmlhttp.send("bd=" + document.forms[0].bd.value + "&sql_alumne=" + encodeURIComponent(document.forms[0].sql_alumne.value));
+    xmlhttp.send("bd=" + document.forms[0].bd.value + "&amp;sql_alumne=" + encodeURIComponent(document.forms[0].sql_alumne.value));
 }
 
 /**
@@ -313,10 +331,9 @@ function load_quests() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
-            //alert(json_obj)
             var arr = JSON.parse(json_obj);
             var selectList = document.createElement("select");
             selectList.id = "sel_questionaris2";
@@ -328,16 +345,11 @@ function load_quests() {
             option.text = "";
             selectList.appendChild(option);
 
-            for (var i = 0; i < arr.length; i++) {
+            for (var i = 0; i &lt; arr.length; i++) {
                 var option = document.createElement("option");
                 option.value = arr[i].id_quest;
                 option.text = arr[i].quest;
-                if (mode_examen==1) { //examen (podem tenir diferents versions de l'examen)
-                    if ((id_alumne % num_versions_examen)==(i%num_versions_examen)) //en un examen, puc tenir dos examens diferents i a l'alumne només se li visualitza un dels dos exàmens. Els dos exàmens han de ser consecutius
-                        selectList.appendChild(option);
-                } else { //qüestionari
-                    selectList.appendChild(option);
-                }
+                selectList.appendChild(option);
             }
             selectList.addEventListener("change", function(){canviar_questionari(this.value)});
 
@@ -385,7 +397,7 @@ function canviar_questionari(vid_quest) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             var obj = JSON.parse(json_obj);
@@ -422,16 +434,16 @@ function carrega_pregunta() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             //alert(json_obj)
             var arr = JSON.parse(json_obj);
             //var arr = obj.data;
-            document.getElementById("questio").innerHTML = "#" + num_pregunta + "/" + num_preguntes + ". (" + arr[0].bd + ") " + arr[0].questio.replaceAll('\n', '<br />');
-            document.getElementById("solucio").innerHTML = arr[0].solucio.replaceAll('\n','<br />').replaceAll('\t','&nbsp;&nbsp;&nbsp;');
+            document.getElementById("questio").innerHTML = "#" + num_pregunta + "/" + num_preguntes + ". (" + arr[0].bd + ") " + arr[0].questio.replaceAll('\n', '&lt;br />');
+            document.getElementById("solucio").innerHTML = arr[0].solucio.replaceAll('\n','&lt;br />').replaceAll('\t','&amp;nbsp;&amp;nbsp;&amp;nbsp;');
             document.forms[0].bd.value = arr[0].bd;
-            document.getElementById("diagrama").innerHTML = "<img src='./img/diagrama_" + arr[0].bd  + "'>";
+            document.getElementById("diagrama").innerHTML = "&lt;img src='./img/diagrama_" + arr[0].bd  + "'>";
             document.forms[0].rollback.value = arr[0].rollback;
             document.forms[0].solucio.value = arr[0].solucio;
             document.forms[0].sql_alumne.value = (mode_developer==0) ? "" : arr[0].solucio; //mostrem la solució si estem en mode desenvolupament 
@@ -440,7 +452,7 @@ function carrega_pregunta() {
     }
     xmlhttp.open("POST","./php/load_questio.php",true);
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xmlhttp.send("id_quest=" + id_quest + "&num_pregunta=" + arr_preguntes[num_pregunta-1]);
+    xmlhttp.send("id_quest=" + id_quest + "&amp;num_pregunta=" + arr_preguntes[num_pregunta-1]);
 }
 
 /**
@@ -460,7 +472,7 @@ function informe_quest() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             if (json_obj.indexOf("Error")==0) {
@@ -475,20 +487,19 @@ function informe_quest() {
                 var dia_arr = arr[0].dia.split('-');
                 var dia_cat = dia_arr[2]+'-'+dia_arr[1]+'-'+dia_arr[0];
                 var quest = arr[0].quest + ' (' + dia_cat + ')';
-                var informe = '<h1>' + nom + '</h1>';
-                informe = informe + '<h2>' + quest + '</h2>';
-                informe = informe + '<h2>Nota: ' + nota + '</h2>';
-                for (var i=0; i<arr.length; i++) {
-                    informe = informe + `<h3>${(i+1)}. ${arr[i].questio.replaceAll('\n','<br />').replaceAll('\t','&nbsp;&nbsp;&nbsp;')}</h3>`;
+                var informe = '&lt;h1>' + nom + '&lt;/h1>';
+                informe = informe + '&lt;h2>' + quest + '&lt;/h2>';
+                informe = informe + '&lt;h2>Nota: ' + nota + '&lt;/h2>';
+                for (var i=0; i&lt;arr.length; i++) {
+                    informe = informe + '&lt;h3>' + (i+1) + '. ' + arr[i].questio.replaceAll('\n','&lt;br />').replaceAll('\t','&amp;nbsp;&amp;nbsp;&amp;nbsp;') + '&lt;/h3>';
                     //comparem sempre la solució de l'alumne amb la solució proposada, encara que estigui bé
                     //if (arr[i].valor==0) {
-                        let resultat = ((arr[i].valor==0) ? 'incorrecta':'correcta');
-                        informe = informe + 'La teva resposta (' + resultat + '):';
-                        informe = informe + `<pre class='${resultat}'>${arr[i].resposta}</pre>`;
-                        informe = informe + 'Solució:';
-                        informe = informe + `<pre>${arr[i].solucio}</pre>`;
+                        informe = informe + 'La teva resposta ' + ((arr[i].valor==0)?' (incorrecta)':' (correcta)') + ':';
+                        informe = informe + '&lt;pre>' + arr[i].resposta + '&lt;/pre>';
+                        informe = informe + 'Solució proposada:';
+                        informe = informe + '&lt;pre>' + arr[i].solucio + '&lt;/pre>';
                     //} else {
-                    //    informe = informe + '<pre>' + arr[i].solucio + '</pre>';
+                    //    informe = informe + '&lt;pre>' + arr[i].solucio + '&lt;/pre>';
                     //}
                 }
                 document.getElementById("sqloutput").innerHTML = informe;
@@ -497,11 +508,11 @@ function informe_quest() {
     }
     xmlhttp.open("POST","./php/informe_quest.php",true);
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xmlhttp.send("id_quest=" + id_quest + "&id_alumne=" + id_alumne);
+    xmlhttp.send("id_quest=" + id_quest + "&amp;id_alumne=" + id_alumne);
 }
 
 function descarregar_informe() {
-    window.open("./php/informe_quest_fpdf.php?id_quest="+id_quest+"&id_alumne="+id_alumne);
+    window.open("./php/informe_quest_fpdf.php?id_quest="+id_quest+"&amp;id_alumne="+id_alumne);
 }
 
 // ===============================
@@ -521,7 +532,7 @@ function onSignIn(googleUser) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_arr=xmlhttp.responseText;
             var arr = JSON.parse(json_arr)
             console.log(arr);
@@ -539,7 +550,7 @@ function onSignIn(googleUser) {
                 document.getElementById("email").innerHTML = "No existeix " + email + " a la bd i amb rol d'alumne";
                 xmlhttp.onreadystatechange=function()
                 {
-                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
                         json_arr=xmlhttp.responseText;
                         var arr = JSON.parse(json_arr)
                         if (arr!="") {
@@ -569,3 +580,26 @@ function onSignIn(googleUser) {
     xmlhttp.send("email=" + email);
 
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#canviar_alumne_professor">canviar_alumne_professor</a></li><li><a href="global.html#canviar_questionari">canviar_questionari</a></li><li><a href="global.html#canviar_questionari_professor">canviar_questionari_professor</a></li><li><a href="global.html#carrega_pregunta">carrega_pregunta</a></li><li><a href="global.html#informe_quest">informe_quest</a></li><li><a href="global.html#informe_questionari_professor">informe_questionari_professor</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#load_alumnes_professor">load_alumnes_professor</a></li><li><a href="global.html#load_quests">load_quests</a></li><li><a href="global.html#load_quests_professor">load_quests_professor</a></li><li><a href="global.html#onSignIn">onSignIn</a></li><li><a href="global.html#pregunta_seguent">pregunta_seguent</a></li><li><a href="global.html#processar">processar</a></li><li><a href="global.html#processar_test">processar_test</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 02:43:24 GMT+0100 (Hora estàndard del Centre d’Europa)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

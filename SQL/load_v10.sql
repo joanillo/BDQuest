@@ -36,10 +36,9 @@ alumne_quest_detall (id_alumne_quest_detall, id_alumne_quest, id_quest_detall, v
 # GRANT ALL ON englishresources.* TO bdquest@localhost WITH GRANT OPTION;
 # GRANT ALL ON classicmodels.* TO bdquest@localhost WITH GRANT OPTION;
 # GRANT ALL ON paraulogic.* TO bdquest@localhost WITH GRANT OPTION;
-
-# NOTA: si vull fer CREATE USER, he de fer:
+# GRANT ALL ON ocells.* TO bdquest@localhost WITH GRANT OPTION;
+# NOTA: si vull fer CREATE USER, GRANTS i REVOKES, he de fer: (no cal per fer selects, create, inserts sobre les taules)
 # GRANT ALL ON mysql.* TO bdquest@localhost;
-# REVOKE ALL ON mysql.* FROM bdquest@localhost;
 
 # flush privileges
 
@@ -157,6 +156,7 @@ INSERT INTO bd VALUES (8,'northwind',20);
 INSERT INTO bd VALUES (9,'vestuari',7);
 INSERT INTO bd VALUES (10,'HR',7);
 INSERT INTO bd VALUES (11,'paraulogic',2);
+INSERT INTO bd VALUES (12,'ocells',4);
 
 INSERT INTO bd_questio VALUES (1, 10, 'seleccionar tots els empleats (utilitzar *)', 1, 0,'SELECT * FROM employees');
 INSERT INTO bd_questio VALUES (2, 10, 'seleccionar el id, nom, cognom i data de contractació de tots els empleats', 1, 0,'SELECT employee_id, first_name, last_name, hire_date FROM employees');
@@ -606,6 +606,209 @@ INSERT INTO bd_questio VALUES (225, 9, 'Vestuaris que no tenen personatge (ref, 
 INSERT INTO bd_questio VALUES (226, 9, 'Llista de personatges i vestuaris, encara que els personatges no tinguin vestuari, i encara que els vestuaris no tinguin personatge (id_pers, pers, ref, vestuari).', 1, 0,'SELECT id_pers, pers, ref, vestuari FROM PERSONATGE P\nLEFT JOIN VEST_PERS VP\nUSING (id_pers)\nLEFT JOIN VESTUARI V\nUSING (ref)\nUNION\nSELECT id_pers, pers, ref, vestuari FROM VESTUARI V\nLEFT JOIN VEST_PERS VP\nUSING (ref)\nLEFT JOIN PERSONATGE P\nUSING (id_pers)');
 INSERT INTO bd_questio VALUES (227, 9, 'Llista de personatges i vestuaris, que els personatges no tinguin vestuari, o bé que els vestuaris no tinguin personatge (id_pers, pers, ref, vestuari).', 1, 0,'SELECT id_pers, pers, ref, vestuari FROM PERSONATGE P\nLEFT JOIN VEST_PERS VP\nUSING (id_pers)\nLEFT JOIN VESTUARI V\nUSING (ref)\nWHERE ref IS NULL\nUNION\nSELECT id_pers, pers, ref, vestuari FROM VESTUARI V\nLEFT JOIN VEST_PERS VP\nUSING (ref)\nLEFT JOIN PERSONATGE P\nUSING (id_pers)\nWHERE id_pers IS NULL');
 
+INSERT INTO bd_questio VALUES (228, 12, 'Llistar els biòlegs (nom, cognom) que participen en el projecte, per ordre alfabètic del cognom.', 1, 0,'select nom,cognom from BIOLEG order by cognom');
+INSERT INTO bd_questio VALUES (229, 12, 'Llistar els ocells presents en el Delta del Llobregat (nom comú, i nom científic). Ordenat per nom científic.', 1, 0,'select nom_comu, nom_cientific from OCELL order by nom_cientific');
+INSERT INTO bd_questio VALUES (230, 12, 'Llistar tots els ocells que són ànecs (id i nom comú, ordenat pel nom)', 1, 0,'select id_ocell, nom_comu from OCELL where nom_comu like ''%anec%'' order by nom_comu');
+INSERT INTO bd_questio VALUES (231, 12, 'Llistar tots els biòlegs que el seu nom comenci per ''P'' (id, nom, cognom, ordenat primer per cognom i després per nom)', 1, 0,'select id_bioleg, nom, cognom from BIOLEG where nom like ''P%'' order by cognom, nom');
+INSERT INTO bd_questio VALUES (232, 12, 'Llistar tots els biòlegs que són responsables d''un mirador (id, cognom), ordenat per cognom', 1, 0,'select id_bioleg, cognom from BIOLEG where id_mirador is not null order by cognom');
+INSERT INTO bd_questio VALUES (233, 12, 'Llistar tots els biòlegs que no són responsables d''un mirador (id, nom), ordenat per nom en ordre descendent.', 1, 0,'select id_bioleg, nom from BIOLEG where id_mirador is null order by nom DESC');
+INSERT INTO bd_questio VALUES (234, 12, 'Llistar les inicials dels biòlegs (per ex, PC, MP), ordenat per nom i per cognom.', 1, 0,'select concat(left(nom,1),left(cognom,1)) as inicials from BIOLEG order by nom,cognom');
+INSERT INTO bd_questio VALUES (235, 12, 'Llistar el gènere i l''espècie dels ocells de forma separada (per ex, Cygnus i olor separats). (ajuda: https://sebhastian.com/mysql-split-string/)', 1, 0,'select SUBSTRING_INDEX(nom_cientific,'' '',1) as genere, SUBSTRING_INDEX(nom_cientific,' ',-1) as especie from OCELL');
+INSERT INTO bd_questio VALUES (236, 12, 'Quins valors tenim en el camp abundància de la taula OCELL? (valors diferents)', 1, 0,'select distinct abundancia from OCELL');
+INSERT INTO bd_questio VALUES (237, 12, 'Quins dies es van fer l''avistament d''ocells (yyyy-mm-dd)? (ordenat per yyyy-mm-dd, 2 valors)', 1, 0,'select distinct DATE(dia_hora) FROM AVISTAMENT');
+INSERT INTO bd_questio VALUES (238, 12, 'Quin és el valor màxim del id d''avistament?', 1, 0,'select max(id_avistament) from AVISTAMENT');
+INSERT INTO bd_questio VALUES (239, 12, 'Quin és el valor màxim del id d''ocell?', 1, 0,'select max(id_ocell) from OCELL');
+INSERT INTO bd_questio VALUES (240, 12, 'Quin és el valor mig de la longitud del nom dels miradors?', 1, 0,'select AVG(LENGTH(mirador)) as avg_mirador from MIRADOR');
+INSERT INTO bd_questio VALUES (241, 12, 'Quin és el valor mig de la longitud del cognom dels biòlegs?', 1, 0,'select AVG(LENGTH(cognom)) as avg_cognom from BIOLEG');
+INSERT INTO bd_questio VALUES (242, 12, 'Quants avistaments ha fet el biòleg id=5?', 1, 0,'select count(*) from AVISTAMENT WHERE id_bioleg=5');
+INSERT INTO bd_questio VALUES (243, 12, 'Quants avistaments s''han fet el dia 5 de març?', 1, 0,'select count(*) from AVISTAMENT WHERE DATE(dia_hora)=''2022-03-05''');
+INSERT INTO bd_questio VALUES (244, 12, 'Llista els 10 primers resultats d''ocells, ordenant-los per nom comú en ordre descendent (id, nom comú)', 1, 0,'select id_ocell, nom_comu from OCELL order by nom_comu DESC LIMIT 10');
+INSERT INTO bd_questio VALUES (245, 12, 'Llista els 5 primers valors dels avistaments més matiners del diumenge 6 de març (tots els camps, ordenat per datetime)', 1, 0,'select * from AVISTAMENT WHERE DATE(dia_hora)=''22-03-06'' order by dia_hora asc limit 5');
+INSERT INTO bd_questio VALUES (246, 12, 'Llista els ocells que el seu nom comú conté una ''x'' i amb més de 10 lletres.', 1, 0,'select * from OCELL where nom_comu like ''%x%'' and LENGTH(nom_comu)>10');
+INSERT INTO bd_questio VALUES (247, 12, 'Llista els ocells que el seu nom científic conté ''y'' i amb més de 15 lletres.', 1, 0,'select * from OCELL where nom_cientific like ''%y%'' and LENGTH(nom_cientific)>15');
+INSERT INTO bd_questio VALUES (248, 12, 'Fer la llista d''ocells, juntament amb la longitud del seu nom comú (nom comú i número de caràcters, ordenat de menor a major).', 1, 0,'select nom_comu, LENGTH(nom_comu) as num FROM OCELL order by num');
+INSERT INTO bd_questio VALUES (249, 12, 'Fer la llista de miradors, juntament amb la longitud del nom del mirador (nom del mirador i número de caràcters, ordenat de menor a major).', 1, 0,'select mirador, LENGTH(mirador) as num FROM MIRADOR order by num');
+INSERT INTO bd_questio VALUES (250, 12, 'Quins són els biòlegs (nom, cognom) que són responsables d''un mirador que comença per Aguait? (subconsulta)', 1, 0,'select nom, cognom from BIOLEG where id_mirador IN (select id_mirador from MIRADOR WHERE mirador like ''Aguait%'')');
+INSERT INTO bd_questio VALUES (251, 12, 'Quins són els miradors que tenen responsable? Ordenat per mirador. (subconsulta)', 1, 0,'select * from MIRADOR where id_mirador IN (select id_mirador from BIOLEG) ORDER BY mirador');
+INSERT INTO bd_questio VALUES (252, 12, 'Llistat dels miradors i el seu responsable (només els que tenen responsable). Nom del mirador i cognom, ordenat per mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nINNER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (253, 12, 'Llistat dels miradors i el seu responsable (només els que tenen responsable). Nom del mirador i cognom, ordenat per mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nINNER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (254, 12, 'Llistar tots els ocells que ha avistat el biòleg id=3 (id_ocell, nom comú, valor únic).', 1, 0,'select id_ocell, nom_comu from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE id_bioleg=3');
+INSERT INTO bd_questio VALUES (255, 12, 'Llistar tots els miradors on ha estat observant el biòleg id=4 (id_mirador, mirador, valor únic).', 1, 0,'select distinct id_mirador, mirador from MIRADOR M\nINNER JOIN AVISTAMENT A USING(id_mirador)\nWHERE id_bioleg=4');
+INSERT INTO bd_questio VALUES (256, 12, 'Llistar tots els ocells que ha avistat el biòleg Jordi Casademunt (id_ocell, nom comú, dia_hora).', 1, 0,'select id_ocell, nom_comu, dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING (id_ocell)\nINNER JOIN BIOLEG B USING (id_bioleg)\nWHERE nom=''Jordi'' AND cognom=''Casademunt''');
+INSERT INTO bd_questio VALUES (257, 12, 'Llistar tots els ocells que s''han avistat des del Mirador de Cal Beitas (id_ocell, nom comú, dia_hora).', 1, 0,'select id_ocell, nom_comu, dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING (id_ocell)\nINNER JOIN MIRADOR M USING (id_mirador)\nWHERE mirador=''Mirador de Cal Beitas''');
+INSERT INTO bd_questio VALUES (258, 12, 'Quin biòleg ha fet l''avistament més matiner del 5 de març? (nom, cognom, dia_hora)', 1, 0,'select nom,cognom,dia_hora FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nORDER BY dia_hora ASC LIMIT 1');
+INSERT INTO bd_questio VALUES (259, 12, 'Quin ocell es va veure primer el dia 5 de març? (nom comú, dia_hora)', 1, 0,'select nom_comu,dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nORDER BY dia_hora ASC LIMIT 1');
+INSERT INTO bd_questio VALUES (260, 12, 'Quin ocell es va veure últim el dia 6 de març? (nom comú, dia_hora)', 1, 0,'select nom_comu,dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nORDER BY dia_hora DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (261, 12, 'Quin biòleg va fer l''últim avistament el dia 6 de març? (nom, cognom, dia_hora)', 1, 0,'select nom,cognom,dia_hora FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nORDER BY dia_hora DESC LIMIT 1');
+
+INSERT INTO bd_questio VALUES (262, 12, 'Fer el llistat d''ocells vistos, biòlegs, miradors i dia_hora, ordenats per línia temporal (nom comú, cognom, nom del mirador, dia_hora)', 1, 0,'select nom_comu,cognom,mirador,dia_hora from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nINNER JOIN MIRADOR M ON A.id_mirador=M.id_mirador\nORDER BY dia_hora');
+INSERT INTO bd_questio VALUES (263, 12, 'Fer el llistat d''ocells vistos, biòlegs, miradors i dia_hora, ordenats per línia temporal (nom comú, cognom, nom del mirador, dia_hora)', 1, 0,'select nom_comu,cognom,mirador,dia_hora from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nINNER JOIN MIRADOR M ON A.id_mirador=M.id_mirador\nORDER BY dia_hora');
+INSERT INTO bd_questio VALUES (264, 12, 'Quins ocells va veure el Roger Berrué el 5 de març? (id, nom comú, nom cientific)', 1, 0,'select id_ocell,nom_comu,nom_cientific FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nWHERE nom=''Roger'' AND cognom=''Berrué'' AND DATE(dia_hora)=''2022-03-05''');
+INSERT INTO bd_questio VALUES (265, 12, 'Quins biòlegs han observat un ànec negre durant aquest cap de setmana de campanya? (nom i cognom, ordenat per cognom, valors únics)', 1, 0,'select DISTINCT nom, cognom FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN OCELL O USING(id_ocell)\nWHERE nom_comu=''Ànec negre''\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (266, 12, 'Quins biòlegs han fet avistaments des de l''Aguait de Cal Tet? (nom i cognom) (valors únics, ordenat per cognom)', 1, 0,'select DISTINCT nom, cognom FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN MIRADOR M ON M.id_mirador=A.id_mirador\nWHERE mirador=''Aguait de Cal Tet''\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (267, 12, 'Quins ocells s''han vist des de l''Aguait de la Maresma? (nom comú, nom científic) (valors únics, ordenat per nom comú)', 1, 0,'select DISTINCT nom_comu, nom_cientific FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN MIRADOR M USING(id_mirador)\nWHERE mirador=''Aguait de la Maresma''\nORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (268, 12, 'Quins ocells es van veure el dissabte 5 de març entre les 15 i les 17h? (nom comú, valors únics, ordenat per nom comú)', 1, 0,'select DISTINCT nom_comu FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05'' AND HOUR(dia_hora)>=15 AND HOUR(dia_hora)<=17 ORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (269, 12, 'Quins biòlegs estaven actius el diumenge 6 de març de 9 a 10 del matí) (nom i cognom, valors únics, ordenat per nom).', 1, 0,'select DISTINCT nom, cognom FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nWHERE DATE(dia_hora)=''2022-03-06'' AND HOUR(dia_hora)>=9 AND HOUR(dia_hora)<=10\nORDER BY nom');
+INSERT INTO bd_questio VALUES (270, 12, 'Llistar els ocells, i el número d''avistaments de cada ocell, que s''han fet el cap de setmana (nom comú i número, ordenat de major a menor).', 1, 0,'select nom_comu, count(*) num FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nGROUP BY nom_comu\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (271, 12, 'Llistar els ocells, i el número d''avistaments de cada ocell, que s''han fet el dissabte (nom comú i número, ordenat de major a menor).', 1, 0,'select nom_comu, count(*) num FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05''\nGROUP BY nom_comu\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (272, 12, 'Llistar els miradors, i el número d''avistaments que s''han fet des dels miradors el diumenge (nom del mirador i número, ordenat de major a menor).', 1, 0,'select mirador, count(*) num FROM MIRADOR M\nINNER JOIN AVISTAMENT A USING(id_mirador)\nWHERE DATE(dia_hora)=''2022-03-06''\nGROUP BY mirador\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (273, 12, 'Llistar els biòlegs, i el número d''avistaments que han fet durant el cap de setmana (nom, cognom i número, ordenat de major a menor).', 1, 0,'select nom, cognom, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nGROUP BY nom, cognom\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (274, 12, 'Fer el resum dels dies (yyyy-mm-dd) i el número d''avistaments que s''ha fet cada dia (ordenat per dia)', 1, 0,'select DATE(dia_hora) dia, count(*) num FROM AVISTAMENT GROUP BY dia');
+INSERT INTO bd_questio VALUES (275, 12, 'Fer el resum dels dies (yyyy-mm-dd) i el número d''avistaments que s''ha fet cada dia (ordenat per dia)', 1, 0,'select DATE(dia_hora) dia, count(*) num FROM AVISTAMENT GROUP BY dia');
+INSERT INTO bd_questio VALUES (276, 12, 'Llista de mirador, i dins de cada mirador llistar els biòlegs i número d''ocells que han avistat (nom del mirador, cognom, número, ordenat per mirador i cognom)', 1, 0,'select mirador, cognom, count(*) num from MIRADOR M\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN BIOLEG USING (id_bioleg)\nGROUP BY mirador, cognom\nORDER BY mirador, cognom');
+INSERT INTO bd_questio VALUES (277, 12, 'Llista dels biòlegs, i per cada biòleg llistar els miradors i número d''ocells que han avistat (cognom, nom del mirador, número, ordenat per cognom i mirador)', 1, 0,'select cognom, mirador, count(*) num from BIOLEG\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN MIRADOR M ON M.id_mirador=A.id_mirador\nGROUP BY cognom, mirador\nORDER BY cognom, mirador');
+INSERT INTO bd_questio VALUES (278, 12, 'Quin és l''ocell més vist? (nom comú, nom científic)', 1, 0,'select nom_comu, nom_cientific FROM OCELL\nINNER JOIN AVISTAMENT USING(id_ocell)\nGROUP BY nom_comu, nom_cientific\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (279, 12, 'Quin és l''ocell menys vist? (nom comú, nom científic)', 1, 0,'select nom_comu, nom_cientific FROM OCELL\nINNER JOIN AVISTAMENT USING(id_ocell)\nGROUP BY nom_comu, nom_cientific\nORDER BY COUNT(*) LIMIT 1');
+INSERT INTO bd_questio VALUES (280, 12, 'Quin biòleg ha fet més avistaments? (nom i cognom tot junt separat per un espai en blanc)', 1, 0,'select CONCAT(nom," ",cognom) as nom_complet FROM BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY nom, cognom\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (281, 12, 'Des de quin mirador s''han fet més avistaments? (format "1. Mirador...")', 1, 0,'select CONCAT(id_mirador,". ",mirador) as mirador FROM MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nGROUP BY id_mirador, mirador\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (282, 12, 'Llista de tots els miradors, i els seus responsables si en tenen (nom del mirador, cognom), ordenat per mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nLEFT OUTER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (283, 12, 'Llista de tots els biòlegs, i els noms dels miradors dels quals són responsables (si en tenen) (cognom i nom del mirador, ordenat per cognom).', 1, 0,'select cognom,mirador from BIOLEG B\nLEFT OUTER JOIN MIRADOR M ON M.id_mirador=B.id_mirador\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (284, 12, 'Llista de biòlegs que aquest cap de setmana no han pogut participar en la campanya (nom i cognom)', 1, 0,'select nom, cognom from BIOLEG where cognom NOT IN(\nselect distinct cognom FROM BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\n)');
+INSERT INTO bd_questio VALUES (285, 12, 'Llista de miradors des dels quals no s''ha fet cap avistament (nom del mirador).', 1, 0,'select mirador from MIRADOR where mirador NOT IN(\nselect distinct mirador FROM MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\n)');
+INSERT INTO bd_questio VALUES (286, 12, 'Quins són els ocells que no es van avistar el dissabte? (nom comú).', 1, 0,'select nom_comu from OCELL where nom_comu NOT IN(\nselect distinct nom_comu FROM OCELL INNER JOIN AVISTAMENT USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05''\n)');
+INSERT INTO bd_questio VALUES (287, 12, 'Quins són els ocells que no es van avistar el cap de setmana? (nom comú).', 1, 0,'select nom_comu from OCELL where nom_comu NOT IN(\nselect distinct nom_comu FROM OCELL INNER JOIN AVISTAMENT USING(id_ocell)\n)');
+INSERT INTO bd_questio VALUES (288, 12, 'Número d''avistaments agrupat per universitat (nom de la universitat, número)', 1, 0,'select universitat, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY universitat');
+INSERT INTO bd_questio VALUES (289, 12, 'Número d''avistaments agrupat per universitat (nom de la universitat, número)', 1, 0,'select universitat, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY universitat');
+INSERT INTO bd_questio VALUES (290, 12, 'De l''Aguait de Cal Tet, quins ocells s''han vist en aquest aguait, i quin número d''avistaments de cadascun (nom comú, número, ordenat per nom comú).', 1, 0,'select nom_comu, count(*) num from MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN OCELL USING(id_ocell)\nwhere mirador=''Aguait de Cal Tet''\nGROUP BY nom_comu ORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (291, 12, 'La Núria Vallès, quins ocells ha vist, i quin número d''avistaments de cadascun (nom comú, número, ordenat per nom comú).', 1, 0,'select nom_comu, count(*) num from BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nINNER JOIN OCELL USING(id_ocell)\nwhere nom=''Núria'' AND cognom=''Vallès''\nGROUP BY nom_comu ORDER BY nom_comu;');
+INSERT INTO bd_questio VALUES (292, 12, 'Llistar tots els ocells, i les persones que els ha vist (també ha de sortir a la llista els ocells que no els vist ningú). Ordenat per nom comú i cognom. Valors únics.', 1, 0,'select distinct nom_comu,cognom from OCELL\nLEFT OUTER JOIN AVISTAMENT USING(id_ocell)\nLEFT OUTER JOIN BIOLEG USING(id_bioleg)\nORDER BY nom_comu, cognom');
+INSERT INTO bd_questio VALUES (293, 12, 'Llistar tots els ocells, i els miradors des d''on s''han vist (també ha de sortir a la llista els ocells que no s''han vist). Ordenat per nom comú i mirador. Valors únics.', 1, 0,'select distinct nom_comu,mirador from OCELL\nLEFT OUTER JOIN AVISTAMENT USING(id_ocell)\nLEFT OUTER JOIN MIRADOR USING(id_mirador)\nORDER BY nom_comu, mirador');
+INSERT INTO bd_questio VALUES (294, 12, 'Llistar tots els biòlegs que han vist un Ànec cuallarg (nom i cognoms, valors únics)', 1, 0,'select distinct nom, cognom from BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nINNER JOIN OCELL USING(id_ocell)\nWHERE nom_comu=''Ànec cuallarg''');
+INSERT INTO bd_questio VALUES (295, 12, 'Llistar tots els miradors on s''ha vist un Ànec cuallarg (nom del mirador, valors únics)', 1, 0,'select distinct mirador from MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN OCELL USING(id_ocell)\nWHERE nom_comu=''Ànec cuallarg''');
+
+INSERT INTO bd_questio VALUES (296, 12, 'Listar los biólogos (nombre, apellido) que participan en el proyecto, por orden alfabético del apellido.', 1, 0,'select nom,cognom from BIOLEG order by cognom');
+INSERT INTO bd_questio VALUES (297, 12, 'Listar los pájaros presentes en el Delta del Llobregat (nombre común, y nombre científico). Ordenado por nombre científico.', 1, 0,'select nom_comu, nom_cientific from OCELL order by nom_cientific');
+INSERT INTO bd_questio VALUES (298, 12, 'Listar todos los pájaros que son patos (ànecs) (id y nombre común, ordenado por el nombre)', 1, 0,'select id_ocell, nom_comu from OCELL where nom_comu like ''%anec%'' order by nom_comu');
+INSERT INTO bd_questio VALUES (299, 12, 'Listar todos los biólogos que su nombre empiece por ''P'' (id, nombre, apellido), ordenado primero por apellido y después por el nombre)', 1, 0,'select id_bioleg,nom,cognom from BIOLEG where nom like ''P%'' order by cognom, nom');
+INSERT INTO bd_questio VALUES (300, 12, 'Listar todos los biólogos que son responsables de un mirador (id, apellido), ordenado por apellido', 1, 0,'select id_bioleg, cognom from BIOLEG where id_mirador is not null order by cognom');
+INSERT INTO bd_questio VALUES (301, 12, 'Listar todos los biólogos que no son responsables de un mirador (id, nombre), ordenado por nombre en orden descendiente.', 1, 0,'select id_bioleg, nom from BIOLEG where id_mirador is null order by nom DESC');
+INSERT INTO bd_questio VALUES (302, 12, 'Listar las iniciales de los biólogos (por ej, PC, MP), ordenado por nombre y por apellido.', 1, 0,'select concat(left(nom,1),left(cognom,1)) as inicials from BIOLEG order by nom,cognom');
+INSERT INTO bd_questio VALUES (303, 12, 'Listar el género y la especie de los pájaros de forma separada (per ex, Cygnus i olor separats). (ajuda: https://sebhastian.com/mysql-split-string/)', 1, 0,'select SUBSTRING_INDEX(nom_cientific,'' '',1) as genere, SUBSTRING_INDEX(nom_cientific,'' '',-1) as especie from OCELL');
+INSERT INTO bd_questio VALUES (304, 12, 'Qué valores tenemos en el campo abundancia de la tabla OCELL? (valores diferentes)', 1, 0,'select distinct abundancia from OCELL');
+INSERT INTO bd_questio VALUES (305, 12, 'Qué días se hicieron avistamientos de pájaros (yyyy-mm-dd)? (Ordenado por yyyy-mm-dd)', 1, 0,'select distinct DATE(dia_hora) FROM AVISTAMENT');
+INSERT INTO bd_questio VALUES (306, 12, 'Cuál es el valor máximo del id de avistamiento?', 1, 0,'select max(id_avistament) from AVISTAMENT');
+INSERT INTO bd_questio VALUES (307, 12, 'Cuál es el valor máximo del id de pájaro?', 1, 0,'select max(id_ocell) from OCELL');
+INSERT INTO bd_questio VALUES (308, 12, 'Cuál es el valor medio de la longitud del nombre de los miradores?', 1, 0,'select AVG(LENGTH(mirador)) as avg_mirador from MIRADOR');
+INSERT INTO bd_questio VALUES (309, 12, 'Cuál es el valor medio de la longitud del apellido de los biólogos?', 1, 0,'select AVG(LENGTH(cognom)) as avg_cognom from BIOLEG');
+INSERT INTO bd_questio VALUES (310, 12, 'Cuántos avistamientos ha hecho el biólogo id=5?', 1, 0,'select count(*) from AVISTAMENT WHERE id_bioleg=5');
+INSERT INTO bd_questio VALUES (311, 12, 'Cuántos avistamientos se han hecho el día 5 de marzo?', 1, 0,'select count(*) from AVISTAMENT WHERE DATE(dia_hora)=''2022-03-05''');
+INSERT INTO bd_questio VALUES (312, 12, 'Lista los 10 primeros resultados de pájaros, ordenándolos por nombre común en orden descendente (id, nombre común)', 1, 0,'select id_ocell, nom_comu from OCELL order by nom_comu DESC LIMIT 10');
+INSERT INTO bd_questio VALUES (313, 12, 'Lista los 5 primeros valores de los avistamientos más tempranos del domingo 6 de marzo (todos los campos, ordenado por datetime)', 1, 0,'select * from AVISTAMENT WHERE DATE(dia_hora)=''22-03-06'' order by dia_hora asc limit 5');
+INSERT INTO bd_questio VALUES (314, 12, 'Lista los pájaros que su nombre común contenga una ''x'' y con más de 10 letras.', 1, 0,'select * from OCELL where nom_comu like ''%x%'' and LENGTH(nom_comu)>10');
+INSERT INTO bd_questio VALUES (315, 12, 'Lista los pájaros que su nombre científico contenga ''y'' y con más de 15 letras.', 1, 0,'select * from OCELL where nom_cientific like ''%y%'' and LENGTH(nom_cientific)>15');
+INSERT INTO bd_questio VALUES (316, 12, 'Hacer la lista de pájaros, junto con la longitud de su nombre común (nombre común y número de caracteres, ordenado de menor a mayor).', 1, 0,'select nom_comu, LENGTH(nom_comu) as num FROM OCELL order by num');
+INSERT INTO bd_questio VALUES (317, 12, 'Hacer la lista de miradores, junto con la longitud del nombre del mirador (nombre del mirador y número de caracteres, ordenado de menor a mayor).', 1, 0,'select mirador, LENGTH(mirador) as num FROM MIRADOR order by num');
+INSERT INTO bd_questio VALUES (318, 12, 'Cuáles son los biólogos (nombre, apellido) que son responsables de un mirador que empieza por Aguait? (subconsulta)', 1, 0,'select nom,cognom from BIOLEG where id_mirador IN (select id_mirador from MIRADOR WHERE mirador like ''Aguait%'')');
+INSERT INTO bd_questio VALUES (319, 12, 'Cuáles son los miradores que tienen responsable? Ordenado por mirador. (subconsulta)', 1, 0,'select * from MIRADOR where id_mirador IN (select id_mirador from BIOLEG) ORDER BY mirador');
+INSERT INTO bd_questio VALUES (320, 12, 'Listado de los miradores y su responsable (sólo los que tienen responsable). Nombre del mirador y apellido, ordenado por mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nINNER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (321, 12, 'Listado de los miradores y su responsable (sólo los que tienen responsable). Nombre del mirador y apellido, ordenado por mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nINNER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (322, 12, 'Listar todos los pájaros que ha avistado el biólogo id=3 (id_ocell, nombre común, valores únicos).', 1, 0,'select id_ocell, nom_comu from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE id_bioleg=3');
+INSERT INTO bd_questio VALUES (323, 12, 'Listar todos los miradores donde ha estado observando el biólogo id=4 (id_mirador, mirador, valores únicos).', 1, 0,'select distinct id_mirador, mirador from MIRADOR M\nINNER JOIN AVISTAMENT A USING(id_mirador)\nWHERE id_bioleg=4');
+INSERT INTO bd_questio VALUES (324, 12, 'Listar todos los pájaros que ha avistado el biólogo Jordi Casademunt (id_ocell, nombre común, dia_hora).', 1, 0,'select id_ocell, nom_comu, dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING (id_ocell)\nINNER JOIN BIOLEG B USING (id_bioleg)\nWHERE nom=''Jordi'' AND cognom=''Casademunt''');
+INSERT INTO bd_questio VALUES (325, 12, 'Listar todos los pájaros que se han avistado desde el Mirador de Cal Beitas (id_ocell, nombre común, dia_hora).', 1, 0,'select id_ocell, nom_comu, dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING (id_ocell)\nINNER JOIN MIRADOR M USING (id_mirador)\nWHERE mirador=''Mirador de Cal Beitas''');
+INSERT INTO bd_questio VALUES (326, 12, 'Qué biólogo ha hecho el avistamiento más temprano del 5 de marzo? (nombre, apellido, dia_hora)', 1, 0,'select nom,cognom,dia_hora FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nORDER BY dia_hora ASC LIMIT 1');
+INSERT INTO bd_questio VALUES (327, 12, 'Qué pájaro se vio primero el día 5 de marzo? (nombre común, dia_hora)', 1, 0,'select nom_comu,dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nORDER BY dia_hora ASC LIMIT 1');
+INSERT INTO bd_questio VALUES (328, 12, 'Qué pájaro se vio último el día 6 de marzo? (nombre común, dia_hora)', 1, 0,'select nom_comu,dia_hora FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nORDER BY dia_hora DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (329, 12, 'Qué biólogo hizo el último avistamiento el día 6 de marzo? (nombre, apellido, dia_hora)', 1, 0,'select nom,cognom,dia_hora FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nORDER BY dia_hora DESC LIMIT 1');
+
+INSERT INTO bd_questio VALUES (330, 12, 'Hacer el listado de pájaros vistos, biólogos, miradores y dia_hora, ordenados por línia temporal (nombre común, apellido, nombre del mirador, dia_hora)', 1, 0,'select nom_comu,cognom,mirador,dia_hora from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nINNER JOIN MIRADOR M ON A.id_mirador=M.id_mirador\nORDER BY dia_hora');
+INSERT INTO bd_questio VALUES (331, 12, 'Hacer el listado de pájaros vistos, biólogos, miradores y dia_hora, ordenados por línia temporal (nombre común, apellido, nombre del mirador, dia_hora)', 1, 0,'select nom_comu,cognom,mirador,dia_hora from OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nINNER JOIN MIRADOR M ON A.id_mirador=M.id_mirador\nORDER BY dia_hora');
+INSERT INTO bd_questio VALUES (332, 12, 'Qué pájaros vio Roger Berrué el 5 de marzo? (id, nombre común, nombre científico)', 1, 0,'select id_ocell,nom_comu,nom_cientific FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN BIOLEG B USING(id_bioleg)\nWHERE nom=''Roger'' AND cognom=''Berrué'' AND DATE(dia_hora)=''2022-03-05''');
+INSERT INTO bd_questio VALUES (333, 12, 'Qué biólogos han observado un pato negro (ànec negre) durante este fin de semana de campaña? (nombre y apellido, ordenado por apellido, valores únicos)', 1, 0,'select DISTINCT nom,cognom FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN OCELL O USING(id_ocell)\nWHERE nom_comu=''Ànec negre''\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (334, 12, 'Qué biólogos han hecho avistamientos desde el Aguait de Cal Tet? (nombre y apellidos) (valores únicos, ordenado por apellido)', 1, 0,'select DISTINCT (nombre, apellido) FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN MIRADOR M ON M.id_mirador=A.id_mirador\nWHERE mirador=''Aguait de Cal Tet''\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (335, 12, 'Qué pájaros se han visto desde el Aguait de la Maresma? (nombre común, nombre científico) (valores únicos, ordenado por nombre común)', 1, 0,'select DISTINCT nom_comu, nom_cientific FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nINNER JOIN MIRADOR M USING(id_mirador)\nWHERE mirador=''Aguait de la Maresma''\nORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (336, 12, 'Qué pájaros es vieron el sábado 5 de marzo entre las 15 y las 17h? (nombre común, valores únicos, ordenado por nombre común)', 1, 0,'select DISTINCT nom_comu FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05'' AND HOUR(dia_hora)>=15 AND HOUR(dia_hora)<=17 ORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (337, 12, 'Qué biólogos estaban activos el domingo 6 de marzo de 9 a 10 de la mañana) (nombre i apellido, valores únicos, ordenado por nombre).', 1, 0,'select DISTINCT nom,cognom FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nWHERE DATE(dia_hora)=''2022-03-06'' AND HOUR(dia_hora)>=9 AND HOUR(dia_hora)<=10\nORDER BY nom');
+INSERT INTO bd_questio VALUES (338, 12, 'Listar los pájaros, y el número de avistamientos de cada pájaro, que se han hecho el fin de semana (nombre común y número, ordenado de mayor a menor).', 1, 0,'select nom_comu, count(*) num FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nGROUP BY nom_comu\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (339, 12, 'Listar los pájaros, y el número de avistamientos de cada pájaro, que se han hecho el sábado (nombre común y número, ordenado de mayor a menor).', 1, 0,'select nom_comu, count(*) num FROM OCELL O\nINNER JOIN AVISTAMENT A USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05''\nGROUP BY nom_comu\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (340, 12, 'Listar los miradores, y el número de avistamientos que se han hecho desde los miradores el domingo (nombre del mirador y número, ordenado de mayor a menor).', 1, 0,'select mirador, count(*) num FROM MIRADOR M\nINNER JOIN AVISTAMENT A USING(id_mirador)\nWHERE DATE(dia_hora)=''2022-03-06''\nGROUP BY mirador\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (341, 12, 'Listar los biólogos, y el número de avistamientos que han hecho durante el fin de semana (nombre, apellido y número, ordenado de mayor a menor).', 1, 0,'select nom,cognom, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nGROUP BY (nombre, apellido)\nORDER BY num DESC');
+INSERT INTO bd_questio VALUES (342, 12, 'Hacer el resumen de los días (yyyy-mm-dd) y el número de avistaments que se ha hecho cada día (ordenado por día)', 1, 0,'select DATE(dia_hora) dia, count(*) num FROM AVISTAMENT GROUP BY dia');
+INSERT INTO bd_questio VALUES (343, 12, 'Hacer el resumen de los días (yyyy-mm-dd) y el número d eavistaments que se ha hecho cada día (ordenado por día)', 1, 0,'select DATE(dia_hora) dia, count(*) num FROM AVISTAMENT GROUP BY dia');
+INSERT INTO bd_questio VALUES (344, 12, 'Lista de miradores, y dentro de cada mirador listar los biólogos y número de pájaros que han avistado (nombre del mirador, apellido, número, ordenado por mirador y apellido)', 1, 0,'select mirador, cognom, count(*) num from MIRADOR M\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN BIOLEG USING (id_bioleg)\nGROUP BY mirador, cognom\nORDER BY mirador, cognom');
+INSERT INTO bd_questio VALUES (345, 12, 'Lista de los biólogos, y por cada biólogo listar los miradores y número de pájaros que han avistado (apellido, nombre del mirador, número, ordenado por apellido y mirador)', 1, 0,'select cognom, mirador, count(*) num from BIOLEG\nINNER JOIN AVISTAMENT A USING(id_bioleg)\nINNER JOIN MIRADOR M ON M.id_mirador=A.id_mirador\nGROUP BY cognom, mirador\nORDER BY cognom, mirador');
+INSERT INTO bd_questio VALUES (346, 12, 'Cuál es el pájaro mas visto? (nombre común, nombre científico)', 1, 0,'select nom_comu, nom_cientific FROM OCELL\nINNER JOIN AVISTAMENT USING(id_ocell)\nGROUP BY nom_comu, nom_cientific\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (347, 12, 'Cuál es el pájaro menos visto (nombre común, nombre científico)?', 1, 0,'select nom_comu, nom_cientific FROM OCELL\nINNER JOIN AVISTAMENT USING(id_ocell)\nGROUP BY nom_comu, nom_cientific\nORDER BY COUNT(*) LIMIT 1');
+INSERT INTO bd_questio VALUES (348, 12, 'Qué biólogo ha hecho más avistamientos? (nombre y apellido todo junto separados por un espacio en blanco)', 1, 0,'select CONCAT(nom," ",cognom) as nom_complet FROM BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY nom,cognom\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (349, 12, 'Desde qué mirador se han hecho más avistamientos? (formato "1. Mirador...")', 1, 0,'select CONCAT(id_mirador,". ",mirador) as mirador FROM MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nGROUP BY id_mirador, mirador\nORDER BY COUNT(*) DESC LIMIT 1');
+INSERT INTO bd_questio VALUES (350, 12, 'Lista de todos los miradores, y sus responsables si es que tienen (nombre del mirador, apellido), ordenado por mirador.', 1, 0,'select mirador, cognom from MIRADOR M\nLEFT OUTER JOIN BIOLEG B ON M.id_mirador=B.id_mirador\nORDER BY mirador');
+INSERT INTO bd_questio VALUES (351, 12, 'Lista de todos los biólogos, y el nombre de los miradores de los que son responsables (si es que tienen) (apellido y nombre del mirador, ordenado por apellido).', 1, 0,'select cognom,mirador from BIOLEG B\nLEFT OUTER JOIN MIRADOR M ON M.id_mirador=B.id_mirador\nORDER BY cognom');
+INSERT INTO bd_questio VALUES (352, 12, 'Lista de biólogos que este fin de semana no han podido participar en la campaña (nombre y apellido)', 1, 0,'select nom,cognom from BIOLEG where cognom NOT IN(\nselect distinct cognom FROM BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\n)');
+INSERT INTO bd_questio VALUES (353, 12, 'Lista de miradores desde los que no se ha hecho ningún avistamiento (nombre del mirador).', 1, 0,'select mirador from MIRADOR where mirador NOT IN(\nselect distinct mirador FROM MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\n)');
+INSERT INTO bd_questio VALUES (354, 12, 'Cuáles son los pájaros que no se avistaron el sábado? (nombre común).', 1, 0,'select nom_comu from OCELL where nom_comu NOT IN(\nselect distinct nom_comu FROM OCELL INNER JOIN AVISTAMENT USING(id_ocell)\nWHERE DATE(dia_hora)=''2022-03-05''\n)');
+INSERT INTO bd_questio VALUES (355, 12, 'Cuáles son los pájaros que no se avistaron el fin de semana? (nombre común).', 1, 0,'select nom_comu from OCELL where nom_comu NOT IN(\nselect distinct nom_comu FROM OCELL INNER JOIN AVISTAMENT USING(id_ocell)\n)');
+INSERT INTO bd_questio VALUES (356, 12, 'Número de avistamientos agrupados por universidad (nombre de la universidad, número)', 1, 0,'select universitat, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY universitat');
+INSERT INTO bd_questio VALUES (357, 12, 'Número de avistamientos agrupados por universidad (nombre de la universidad, número)', 1, 0,'select universitat, count(*) num FROM BIOLEG B\nINNER JOIN AVISTAMENT USING(id_bioleg)\nGROUP BY universitat');
+INSERT INTO bd_questio VALUES (358, 12, 'En el Aguait de Cal Tet, qué pájaros se han visto en esta guarida, y qué número de avistamientos de cada uno (nombre común, número, ordenado por nombre común).', 1, 0,'select nom_comu, count(*) num from MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN OCELL USING(id_ocell)\nwhere mirador=''Aguait de Cal Tet''\nGROUP BY nom_comu ORDER BY nom_comu');
+INSERT INTO bd_questio VALUES (359, 12, 'Núria Vallès, qué pájaros ha visto, y qué número de avistamientos de cada uno (nombre común, número, ordenado por nombre común).', 1, 0,'select nom_comu, count(*) num from BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nINNER JOIN OCELL USING(id_ocell)\nwhere nom=''Núria'' AND cognom=''Vallès''\nGROUP BY nom_comu ORDER BY nom_comu;');
+INSERT INTO bd_questio VALUES (360, 12, 'Listar todos los pájaros, y las personas que los han visto (también ha de salir en la lista los pájaros que no los ha visto nadie). Ordenado por nombre común y apellido. Valores únicos.', 1, 0,'select distinct nom_comu,cognom from OCELL\nLEFT OUTER JOIN AVISTAMENT USING(id_ocell)\nLEFT OUTER JOIN BIOLEG USING(id_bioleg)\nORDER BY nom_comu, cognom');
+INSERT INTO bd_questio VALUES (361, 12, 'Listar todos los pájaros, y los miradores desde donde se han visto (también ha de salir en la lista los pájaros que no se han visto). Ordenado por nombre común y mirador. Valores únicos.', 1, 0,'select distinct nom_comu,mirador from OCELL\nLEFT OUTER JOIN AVISTAMENT USING(id_ocell)\nLEFT OUTER JOIN MIRADOR USING(id_mirador)\nORDER BY nom_comu, mirador');
+INSERT INTO bd_questio VALUES (362, 12, 'Listar todos los biólogos que han visto un Ànec cuallarg (nombre y apellidos, valores únicos)', 1, 0,'select distinct nom,cognom from BIOLEG\nINNER JOIN AVISTAMENT USING(id_bioleg)\nINNER JOIN OCELL USING(id_ocell)\nWHERE nom_comu=''Ànec cuallarg''');
+INSERT INTO bd_questio VALUES (363, 12, 'Listar todos los miradores donde se ha visto un Ànec cuallarg (nombre del mirador, valores únicos)', 1, 0,'select distinct mirador from MIRADOR\nINNER JOIN AVISTAMENT USING(id_mirador)\nINNER JOIN OCELL USING(id_ocell)\nWHERE nom_comu=''Ànec cuallarg''');
+
+INSERT INTO bd_questio VALUES (364, 1, 'Crear usuari usertest per connectar-se localment (localhost)', 1, 2,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''');
+INSERT INTO bd_questio VALUES (365, 1, 'Eliminar usuari usertest (localhost)', 1, 2,'DROP USER ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (366, 1, 'Donar permisos a l''usuari usertest per modificar el camp municipis.municipis', 1, 2,'GRANT UPDATE(municipi) ON municipis.municipis TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (367, 1, 'Donar tots els privilegis a l''usuari usertest (localhost) sobre la base de dades de municipis', 1, 2,'GRANT ALL PRIVILEGES ON municipis.* TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (368, 1, 'Donar privilegis de només lectura a l''usuari usertest (localhost) sobre la taula de comunitats', 1, 2,'GRANT SELECT ON municipis.comunitats TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (369, 9, 'Donar privilegis de inserció i de modificació de superfície sobre la taula municipis, a l''usuari usertest (localhost)', 1, 2,'GRANT INSERT, UPDATE(superficie) ON municipis.municipis TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (370, 9, 'Mostrar els permisos de l''usertest (localhost) ', 1, 2,'SHOW GRANTS FOR ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (371, 9, 'Donar el privilegi d''esborrat de comunitats a l''usuari usertest (localhost)', 1, 2,'GRANT DELETE ON municipis.comunitats TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (372, 9, 'Donar el privilegi de lectura sobre la vista INFORME_MUNICIPIS a l''usuari usertest (localhost)', 1, 2,'GRANT SELECT ON municipis.INFORME_MUNICIPIS TO ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (373, 9, 'Revocar el privilegi de inserció sobre la taula municipis a l''usuari usertest (localhost)', 1, 2,'REVOKE INSERT ON municipis.municipis FROM ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (374, 9, 'Revocar el privilegi de lectura, inserció, modificació i esborrat sobre la taula municipis a l''usuari usertest (localhost)', 1, 2,'REVOKE SELECT,INSERT,UPDATE,DELETE ON municipis.municipis FROM ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (375, 9, 'Revocar tots els privilegis sobre la taula municipis a l''usuari usertest (localhost)', 1, 2,'REVOKE ALL privileges ON municipis.municipis FROM ''usertest''@''localhost''');
+INSERT INTO bd_questio VALUES (376, 9, 'Revocar tots els privilegis a l''usuari usertest (localhost)', 1, 2,'REVOKE ALL PRIVILEGES, GRANT OPTION FROM ''usertest''@''localhost''');
+
+INSERT INTO bd_questio_prepost VALUES (364,1,'GRANT ALL ON municipis.* TO ''usertest''@localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (364,2,'FLUSH PRIVILEGES','POST'); # no cal
+INSERT INTO bd_questio_prepost VALUES (364,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (364,4,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (365,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (365,2,'SHOW GRANTS FOR ''usertest''@''localhost''','PRE');
+#per a un drop user, he de tornar a fer el drop user perquè si l'alumne s'equivoca, quedaria l'usuari creat
+INSERT INTO bd_questio_prepost VALUES (365,4,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (366,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (366,2,'FLUSH PRIVILEGES','PRE');
+INSERT INTO bd_questio_prepost VALUES (366,3,'FLUSH PRIVILEGES','POST');
+INSERT INTO bd_questio_prepost VALUES (366,4,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (366,5,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (367,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (367,2,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (367,3,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (368,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (368,2,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (368,3,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (369,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (369,2,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (369,3,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (370,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (370,2,'GRANT INSERT, UPDATE(superficie) ON municipis.municipis TO ''usertest''@''localhost''','PRE');
+INSERT INTO bd_questio_prepost VALUES (370,3,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (371,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (371,2,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (371,3,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (372,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (372,2,'create view municipis.INFORME_MUNICIPIS AS (SELECT municipi from municipis.municipis where id_mun>7800)','PRE');
+INSERT INTO bd_questio_prepost VALUES (372,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (372,4,'drop view municipis.INFORME_MUNICIPIS','POST');
+INSERT INTO bd_questio_prepost VALUES (372,5,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (373,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (373,2,'GRANT INSERT ON municipis.municipis TO ''usertest''@''localhost''','PRE');
+INSERT INTO bd_questio_prepost VALUES (373,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (373,4,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (374,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (374,2,'GRANT SELECT,INSERT,UPDATE,DELETE ON municipis.municipis TO ''usertest''@''localhost''','PRE');
+INSERT INTO bd_questio_prepost VALUES (374,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (374,4,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (375,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (375,2,'GRANT SELECT,INSERT,UPDATE,DELETE ON municipis.municipis TO ''usertest''@''localhost''','PRE');
+INSERT INTO bd_questio_prepost VALUES (375,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (375,4,'DROP USER ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (376,1,'CREATE USER ''usertest''@''localhost'' IDENTIFIED BY ''keiL2lai''','PRE');
+INSERT INTO bd_questio_prepost VALUES (376,2,'GRANT SELECT,INSERT,UPDATE,DELETE ON municipis.municipis TO ''usertest''@''localhost''','PRE');
+INSERT INTO bd_questio_prepost VALUES (376,3,'SHOW GRANTS FOR ''usertest''@''localhost''','POST');
+INSERT INTO bd_questio_prepost VALUES (376,4,'DROP USER ''usertest''@''localhost''','POST');
 
 # ===========
 
@@ -673,6 +876,15 @@ INSERT INTO quest VALUES (18, 'UNION', 1, '2022-02-08', 0, 1);
 INSERT INTO quest VALUES (19, 'LEFT JOIN', 1, '2022-02-09', 0, 1);
 INSERT INTO quest VALUES (20, 'Barreja I', 1, '2022-02-16', 1, 1);
 INSERT INTO quest VALUES (21, 'Barreja II', 1, '2022-02-16', 1, 1);
+INSERT INTO quest VALUES (22, 'Examen UF2-BD 1a part', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (23, 'Examen UF2-BD 1a part', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (24, 'Examen UF2-BD 2a part', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (25, 'Examen UF2-BD 2a part', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (26, 'Examen UF2-BD 1a part (cast)', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (27, 'Examen UF2-BD 1a part (cast)', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (28, 'Examen UF2-BD 2a part (cast)', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (29, 'Examen UF2-BD 2a part (cast)', 1, '2022-03-09', 0, 1);
+INSERT INTO quest VALUES (30, 'Usuaris i privilegis', 1, '2022-03-07',0, 1);
 
 INSERT INTO quest_detall VALUES (1, 1, 1, 1);
 INSERT INTO quest_detall VALUES (2, 1, 2, 2);
@@ -958,6 +1170,164 @@ INSERT INTO quest_detall VALUES (261, 21, 224, 16);
 INSERT INTO quest_detall VALUES (262, 21, 104, 17);
 INSERT INTO quest_detall VALUES (263, 21, 122, 18);
 
+INSERT INTO quest_detall VALUES (264, 22, 228, 1);
+INSERT INTO quest_detall VALUES (265, 22, 230, 2);
+INSERT INTO quest_detall VALUES (266, 22, 232, 3);
+INSERT INTO quest_detall VALUES (267, 22, 234, 4);
+INSERT INTO quest_detall VALUES (268, 22, 236, 5);
+INSERT INTO quest_detall VALUES (269, 22, 238, 6);
+INSERT INTO quest_detall VALUES (270, 22, 240, 7);
+INSERT INTO quest_detall VALUES (271, 22, 242, 8);
+INSERT INTO quest_detall VALUES (272, 22, 244, 9);
+INSERT INTO quest_detall VALUES (273, 22, 246, 10);
+INSERT INTO quest_detall VALUES (274, 22, 248, 11);
+INSERT INTO quest_detall VALUES (275, 22, 250, 12);
+INSERT INTO quest_detall VALUES (276, 22, 252, 13);
+INSERT INTO quest_detall VALUES (277, 22, 254, 14);
+INSERT INTO quest_detall VALUES (278, 22, 256, 15);
+INSERT INTO quest_detall VALUES (279, 22, 258, 16);
+INSERT INTO quest_detall VALUES (280, 22, 260, 17);
+
+INSERT INTO quest_detall VALUES (298, 23, 229, 1);
+INSERT INTO quest_detall VALUES (299, 23, 231, 2);
+INSERT INTO quest_detall VALUES (300, 23, 233, 3);
+INSERT INTO quest_detall VALUES (301, 23, 235, 4);
+INSERT INTO quest_detall VALUES (302, 23, 237, 5);
+INSERT INTO quest_detall VALUES (303, 23, 239, 6);
+INSERT INTO quest_detall VALUES (304, 23, 241, 7);
+INSERT INTO quest_detall VALUES (305, 23, 243, 8);
+INSERT INTO quest_detall VALUES (306, 23, 245, 9);
+INSERT INTO quest_detall VALUES (307, 23, 247, 10);
+INSERT INTO quest_detall VALUES (308, 23, 249, 11);
+INSERT INTO quest_detall VALUES (309, 23, 251, 12);
+INSERT INTO quest_detall VALUES (310, 23, 253, 13);
+INSERT INTO quest_detall VALUES (311, 23, 255, 14);
+INSERT INTO quest_detall VALUES (312, 23, 257, 15);
+INSERT INTO quest_detall VALUES (313, 23, 259, 16);
+INSERT INTO quest_detall VALUES (314, 23, 261, 17);
+
+INSERT INTO quest_detall VALUES (281, 24, 262, 1);
+INSERT INTO quest_detall VALUES (282, 24, 264, 2);
+INSERT INTO quest_detall VALUES (283, 24, 266, 3);
+INSERT INTO quest_detall VALUES (284, 24, 268, 4);
+INSERT INTO quest_detall VALUES (285, 24, 270, 5);
+INSERT INTO quest_detall VALUES (286, 24, 272, 6);
+INSERT INTO quest_detall VALUES (287, 24, 274, 7);
+INSERT INTO quest_detall VALUES (288, 24, 276, 8);
+INSERT INTO quest_detall VALUES (289, 24, 278, 9);
+INSERT INTO quest_detall VALUES (290, 24, 280, 10);
+INSERT INTO quest_detall VALUES (291, 24, 282, 11);
+INSERT INTO quest_detall VALUES (292, 24, 284, 12);
+INSERT INTO quest_detall VALUES (293, 24, 286, 13);
+INSERT INTO quest_detall VALUES (294, 24, 288, 14);
+INSERT INTO quest_detall VALUES (295, 24, 290, 15);
+INSERT INTO quest_detall VALUES (296, 24, 292, 16);
+INSERT INTO quest_detall VALUES (297, 24, 294, 17);
+
+INSERT INTO quest_detall VALUES (315, 25, 263, 1);
+INSERT INTO quest_detall VALUES (316, 25, 265, 2);
+INSERT INTO quest_detall VALUES (317, 25, 267, 3);
+INSERT INTO quest_detall VALUES (318, 25, 269, 4);
+INSERT INTO quest_detall VALUES (319, 25, 271, 5);
+INSERT INTO quest_detall VALUES (320, 25, 273, 6);
+INSERT INTO quest_detall VALUES (321, 25, 275, 7);
+INSERT INTO quest_detall VALUES (322, 25, 277, 8);
+INSERT INTO quest_detall VALUES (323, 25, 279, 9);
+INSERT INTO quest_detall VALUES (324, 25, 281, 10);
+INSERT INTO quest_detall VALUES (325, 25, 283, 11);
+INSERT INTO quest_detall VALUES (326, 25, 285, 12);
+INSERT INTO quest_detall VALUES (327, 25, 287, 13);
+INSERT INTO quest_detall VALUES (328, 25, 289, 14);
+INSERT INTO quest_detall VALUES (329, 25, 291, 15);
+INSERT INTO quest_detall VALUES (330, 25, 293, 16);
+INSERT INTO quest_detall VALUES (331, 25, 295, 17);
+
+INSERT INTO quest_detall VALUES (332, 26, 296, 1);
+INSERT INTO quest_detall VALUES (333, 26, 298, 2);
+INSERT INTO quest_detall VALUES (334, 26, 300, 3);
+INSERT INTO quest_detall VALUES (335, 26, 302, 4);
+INSERT INTO quest_detall VALUES (336, 26, 304, 5);
+INSERT INTO quest_detall VALUES (337, 26, 306, 6);
+INSERT INTO quest_detall VALUES (338, 26, 308, 7);
+INSERT INTO quest_detall VALUES (339, 26, 310, 8);
+INSERT INTO quest_detall VALUES (340, 26, 312, 9);
+INSERT INTO quest_detall VALUES (341, 26, 314, 10);
+INSERT INTO quest_detall VALUES (342, 26, 316, 11);
+INSERT INTO quest_detall VALUES (343, 26, 318, 12);
+INSERT INTO quest_detall VALUES (344, 26, 320, 13);
+INSERT INTO quest_detall VALUES (345, 26, 322, 14);
+INSERT INTO quest_detall VALUES (346, 26, 324, 15);
+INSERT INTO quest_detall VALUES (347, 26, 326, 16);
+INSERT INTO quest_detall VALUES (348, 26, 328, 17);
+
+INSERT INTO quest_detall VALUES (366, 27, 297, 1);
+INSERT INTO quest_detall VALUES (367, 27, 299, 2);
+INSERT INTO quest_detall VALUES (368, 27, 301, 3);
+INSERT INTO quest_detall VALUES (369, 27, 303, 4);
+INSERT INTO quest_detall VALUES (370, 27, 305, 5);
+INSERT INTO quest_detall VALUES (371, 27, 307, 6);
+INSERT INTO quest_detall VALUES (372, 27, 309, 7);
+INSERT INTO quest_detall VALUES (373, 27, 311, 8);
+INSERT INTO quest_detall VALUES (374, 27, 313, 9);
+INSERT INTO quest_detall VALUES (375, 27, 315, 10);
+INSERT INTO quest_detall VALUES (376, 27, 317, 11);
+INSERT INTO quest_detall VALUES (377, 27, 319, 12);
+INSERT INTO quest_detall VALUES (378, 27, 321, 13);
+INSERT INTO quest_detall VALUES (379, 27, 323, 14);
+INSERT INTO quest_detall VALUES (380, 27, 325, 15);
+INSERT INTO quest_detall VALUES (381, 27, 327, 16);
+INSERT INTO quest_detall VALUES (382, 27, 329, 17);
+
+INSERT INTO quest_detall VALUES (349, 28, 330, 1);
+INSERT INTO quest_detall VALUES (350, 28, 332, 2);
+INSERT INTO quest_detall VALUES (351, 28, 334, 3);
+INSERT INTO quest_detall VALUES (352, 28, 336, 4);
+INSERT INTO quest_detall VALUES (353, 28, 338, 5);
+INSERT INTO quest_detall VALUES (354, 28, 340, 6);
+INSERT INTO quest_detall VALUES (355, 28, 342, 7);
+INSERT INTO quest_detall VALUES (356, 28, 344, 8);
+INSERT INTO quest_detall VALUES (357, 28, 346, 9);
+INSERT INTO quest_detall VALUES (358, 28, 348, 10);
+INSERT INTO quest_detall VALUES (359, 28, 350, 11);
+INSERT INTO quest_detall VALUES (360, 28, 352, 12);
+INSERT INTO quest_detall VALUES (361, 28, 354, 13);
+INSERT INTO quest_detall VALUES (362, 28, 356, 14);
+INSERT INTO quest_detall VALUES (363, 28, 358, 15);
+INSERT INTO quest_detall VALUES (364, 28, 360, 16);
+INSERT INTO quest_detall VALUES (365, 28, 362, 17);
+
+INSERT INTO quest_detall VALUES (383, 29, 331, 1);
+INSERT INTO quest_detall VALUES (384, 29, 333, 2);
+INSERT INTO quest_detall VALUES (385, 29, 335, 3);
+INSERT INTO quest_detall VALUES (386, 29, 337, 4);
+INSERT INTO quest_detall VALUES (387, 29, 339, 5);
+INSERT INTO quest_detall VALUES (388, 29, 341, 6);
+INSERT INTO quest_detall VALUES (389, 29, 343, 7);
+INSERT INTO quest_detall VALUES (390, 29, 345, 8);
+INSERT INTO quest_detall VALUES (391, 29, 347, 9);
+INSERT INTO quest_detall VALUES (392, 29, 349, 10);
+INSERT INTO quest_detall VALUES (393, 29, 351, 11);
+INSERT INTO quest_detall VALUES (394, 29, 353, 12);
+INSERT INTO quest_detall VALUES (395, 29, 355, 13);
+INSERT INTO quest_detall VALUES (396, 29, 357, 14);
+INSERT INTO quest_detall VALUES (397, 29, 359, 15);
+INSERT INTO quest_detall VALUES (398, 29, 361, 16);
+INSERT INTO quest_detall VALUES (399, 29, 363, 17);
+
+INSERT INTO quest_detall VALUES (400, 30, 364, 1);
+INSERT INTO quest_detall VALUES (401, 30, 365, 2);
+INSERT INTO quest_detall VALUES (402, 30, 366, 3);
+INSERT INTO quest_detall VALUES (403, 30, 367, 4);
+INSERT INTO quest_detall VALUES (404, 30, 368, 5);
+INSERT INTO quest_detall VALUES (405, 30, 369, 6);
+INSERT INTO quest_detall VALUES (406, 30, 370, 7);
+INSERT INTO quest_detall VALUES (407, 30, 371, 8);
+INSERT INTO quest_detall VALUES (408, 30, 372, 9);
+INSERT INTO quest_detall VALUES (409, 30, 373, 10);
+INSERT INTO quest_detall VALUES (410, 30, 374, 11);
+INSERT INTO quest_detall VALUES (411, 30, 375, 12);
+INSERT INTO quest_detall VALUES (412, 30, 376, 13);
+
 # consultes
 # donat el id_quest, llistat de les preguntes:
 #select id_quest_detall, bd, questio, solucio from quest_detall qd, bd_questio bdq, bd where qd.id_bd_questio=bdq.id_bd_questio and bd.id_bd=bdq.id_bd and id_quest=1;
@@ -1024,6 +1394,10 @@ mysql> select * from alumne_quest where id_alumne=18;
 +-----------------+-----------+----------+------------+------+
 */
 
+/*
+Consulta per controlar com van els alumnes mentre estan fent un examen:
+select id_alumne_quest,id_quest,dia,nom,cognoms,nota from alumne a inner join alumne_quest aq using(id_alumne)
+where id_alumne>1 and id_quest>=22 order by id_alumne, id_quest, id_alumne_quest;
 */
 
 /*
@@ -1041,7 +1415,7 @@ INSERT INTO bd_questio VALUES (1, 10, 'seleccionar el id, nom\nde tots els emple
 INSERT INTO alumne VALUES (1, 'Joan', 'Quintana', '1DAM', 'jquintana@jaumebalmes.net',1);
 INSERT INTO professor VALUES (1, 'Joan', 'Quintana', '1DAM', 'jquintana@jaumebalmes.net');
 INSERT INTO professor VALUES (2, 'Joan', 'Quintana', '1DAW', 'admin@jaumebalmes.net');
-INSERT INTO quest VALUES (1, 'bàsic HR I', 1, '2021-11-17', 10, 0, 1);
+INSERT INTO quest VALUES (1, 'bàsic HR I', 1, '2021-11-17', 0, 1);
 INSERT INTO quest_detall VALUES (1, 1, 1, 1);
 */
 /*
@@ -1065,7 +1439,7 @@ delete from bd_questio_prepost where id_bd_questio>=228;
 delete from bd_questio where id_bd_questio>=228;
 delete from quest where id_quest=20;
 
-INSERT INTO quest VALUES (20, 'PROVA', 1, '2022-02-12', 9, 0, 1);
+INSERT INTO quest VALUES (20, 'PROVA', 1, '2022-02-12', 0, 1);
 
 INSERT INTO bd_questio VALUES (228, 9, 'Crear usuari pepet', 1, 2,'CREATE USER pepet@localhost IDENTIFIED BY ''keiL2lai''');
 INSERT INTO bd_questio VALUES (229, 9, 'Eliminar usuari pepet', 1, 2,'DROP USER pepet@localhost');
@@ -1108,7 +1482,7 @@ delete from bd_questio_prepost where id_bd_questio>=228;
 delete from bd_questio where id_bd_questio>=228;
 delete from quest where id_quest=20;
 
-INSERT INTO quest VALUES (20, 'PROVA', 1, '2022-02-12', 5, 0, 1);
+INSERT INTO quest VALUES (20, 'PROVA', 1, '2022-02-12', 0, 1);
 
 INSERT INTO bd_questio VALUES (228, 5, 'Crear el procediment GetCustomerLevel, amb un paràmetre d''entrada i un de sortida, que miri els clients que tinguin un crèdit superior a 50000, retornant ''PLATINUM'' o ''NO PLATINUM''', 1, 2,'CREATE PROCEDURE GetCustomerLevel(\n\tIN  pCustomerNumber INT,\n\tOUT pCustomerLevel  VARCHAR(20))\nBEGIN\n\tDECLARE credit DECIMAL DEFAULT 0;\n\tSELECT creditLimit\n\tINTO credit\n\tFROM customers\n\tWHERE customerNumber = pCustomerNumber;\n\tIF credit > 50000 THEN\n\t\tSET pCustomerLevel = ''PLATINUM'';\n\tELSE\n\t\tSET pCustomerLevel = ''NOT PLATINUM'';\n\tEND IF;\nEND');
 

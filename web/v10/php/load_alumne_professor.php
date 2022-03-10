@@ -1,4 +1,10 @@
 <?php
+/*
+BDQuest v10 (GPLv3)
+@ Joan Quintana - 2021-2022
+https://wiki.joanillo.org/index.php/BDQuest
+*/
+
 include("open_db_bdquest.php");
 
 $id_alumne = $_POST['id_alumne'];

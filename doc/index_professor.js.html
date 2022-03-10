@@ -1,9 +1,32 @@
-/*
-BDQuest v10 (GPLv3)
-@ Joan Quintana - 2021-2022
-https://wiki.joanillo.org/index.php/BDQuest
-*/
-//variables globals
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index_professor.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index_professor.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//variables globals
 var googleUser; // The current user.
 var email;
 var id_professor;
@@ -32,7 +55,7 @@ function load_alumnes_professor() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             var arr = JSON.parse(json_obj);
@@ -46,7 +69,7 @@ function load_alumnes_professor() {
             option.text = "";
             selectList.appendChild(option);
 
-            for (var i = 0; i < arr.length; i++) {
+            for (var i = 0; i &lt; arr.length; i++) {
                 var option = document.createElement("option");
                 option.value = arr[i].id_alumne;
                 if (arr[i].num=='0') option.disabled=true;
@@ -55,7 +78,7 @@ function load_alumnes_professor() {
             }
             selectList.addEventListener("click", function(){canviar_alumne_professor(this.value)});
         } else {
-        	//document.getElementById('llista').innerHTML = "<img src=\"img/ajax_wait.gif\" />";
+        	//document.getElementById('llista').innerHTML = "&lt;img src=\"img/ajax_wait.gif\" />";
         }
     }
     xmlhttp.open("POST","./php/load_alumnes_professor.php",true);
@@ -71,7 +94,7 @@ function load_quests_professor() {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             var arr = JSON.parse(json_obj);
@@ -85,7 +108,7 @@ function load_quests_professor() {
             option.text = "";
             selectList.appendChild(option);
 
-            for (var i = 0; i < arr.length; i++) {
+            for (var i = 0; i &lt; arr.length; i++) {
                 var option = document.createElement("option");
                 option.value = arr[i].id_quest;
                 if (arr[i].num=='0') option.disabled=true;
@@ -94,7 +117,7 @@ function load_quests_professor() {
             }
             selectList.addEventListener("click", function(){canviar_questionari_professor(this.value)});
         } else {
-        	//document.getElementById('llista').innerHTML = "<img src=\"img/ajax_wait.gif\" />";
+        	//document.getElementById('llista').innerHTML = "&lt;img src=\"img/ajax_wait.gif\" />";
         }
     }
     xmlhttp.open("POST","./php/load_quests_professor.php",true);
@@ -115,7 +138,7 @@ function canviar_alumne_professor(vid_alumne) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             var arr = JSON.parse(json_obj);
@@ -127,9 +150,9 @@ function canviar_alumne_professor(vid_alumne) {
 			cognoms = arr[0].cognoms;
 			curs = arr[0].curs;
 
-			document.getElementById("titol").innerHTML = "<h1>" + nom + " " + cognoms + " (" + curs + ")</h1>";
+			document.getElementById("titol").innerHTML = "&lt;h1>" + nom + " " + cognoms + " (" + curs + ")&lt;/h1>";
 
-            for (var i=0;i<arr.length;i++) {
+            for (var i=0;i&lt;arr.length;i++) {
 			
 				var dia_arr = arr[i].dia.split('-');
 				var dia_cat = dia_arr[2]+'-'+dia_arr[1]+'-'+dia_arr[0];
@@ -155,7 +178,7 @@ function canviar_alumne_professor(vid_alumne) {
 
 			var anchors = document.getElementsByTagName("a");
 
-			for (var i = 0; i < anchors.length ; i++) {
+			for (var i = 0; i &lt; anchors.length ; i++) {
 				anchors[i].addEventListener("click",
 					function (event) {
 						event.preventDefault();
@@ -184,7 +207,7 @@ function canviar_questionari_professor(vid_quest) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //alert(json_obj);
             //console.log(json_obj)
@@ -194,9 +217,9 @@ function canviar_questionari_professor(vid_quest) {
             list.setAttribute("id", "myUL");
 
 			quest = arr[0].quest;
-			document.getElementById("titol").innerHTML = "<h1>" + quest + "</h1>";
+			document.getElementById("titol").innerHTML = "&lt;h1>" + quest + "&lt;/h1>";
 
-            for (var i=0;i<arr.length;i++) {
+            for (var i=0;i&lt;arr.length;i++) {
 
 				var dia_arr = arr[i].dia.split('-');
 				var dia_cat = dia_arr[2]+'-'+dia_arr[1]+'-'+dia_arr[0];
@@ -223,7 +246,7 @@ function canviar_questionari_professor(vid_quest) {
 
 			var anchors = document.getElementsByTagName("a");
 
-			for (var i = 0; i < anchors.length ; i++) {
+			for (var i = 0; i &lt; anchors.length ; i++) {
 				anchors[i].addEventListener("click",
 					function (event) {
 						event.preventDefault();
@@ -252,7 +275,7 @@ function informe_questionari_professor(vid_quest_detall) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_obj=xmlhttp.responseText;
             //console.log(json_obj)
             var arr = JSON.parse(json_obj);
@@ -262,22 +285,21 @@ function informe_questionari_professor(vid_quest_detall) {
             var dia_arr = arr[0].dia.split('-');
             var dia_cat = dia_arr[2]+'-'+dia_arr[1]+'-'+dia_arr[0];
             quest = arr[0].quest + ' (' + dia_cat + ')';
-            //informe = '<h1>' + nom + '</h1>';
-            informe = informe + '<h2>' + quest + '</h2>';
-            informe = informe + '<h2>Nota: ' + nota + '</h2>';
+            //informe = '&lt;h1>' + nom + '&lt;/h1>';
+            informe = informe + '&lt;h2>' + quest + '&lt;/h2>';
+            informe = informe + '&lt;h2>Nota: ' + nota + '&lt;/h2>';
 
-			for (var i=0;i<arr.length;i++) {
-                informe = informe + `<h3>${(i+1)}. ${arr[i].questio}</h3>`;
-                //comparem sempre la solució de l'alumne amb la solució proposada, encara que estigui bé
-                //if (arr[i].valor==0) {
-                    let resultat = ((arr[i].valor==0) ? 'incorrecta':'correcta');
-                    informe = informe + 'La teva resposta (' + resultat + '):';
-                    informe = informe + `<pre class='${resultat}'>${arr[i].resposta}</pre>`;
-                    informe = informe + 'Solució proposada:';
-                    informe = informe + `<pre>${arr[i].solucio}</pre>`;
-                //} else {
-                //    informe = informe + '<pre>' + arr[i].solucio + '</pre>';
-                //}
+			for (var i=0;i&lt;arr.length;i++) {
+
+                informe = informe + '&lt;h3>' + (i+1) + '. ' + arr[i].questio + '&lt;/h3>';
+                if (arr[i].valor==0) {
+                    informe = informe + 'La teva resposta:';
+                    informe = informe + '&lt;pre>' + arr[i].resposta + '&lt;/pre>';
+                    informe = informe + 'Solució:';
+                    informe = informe + '&lt;pre>' + arr[i].solucio + '&lt;/pre>';
+                } else {
+                    informe = informe + '&lt;pre>' + arr[i].solucio + '&lt;/pre>';
+                }
 			}
 			
 			document.getElementById("llista").innerHTML = informe;
@@ -301,7 +323,7 @@ function onSignIn(googleUser) {
     xmlhttp=new XMLHttpRequest();
     xmlhttp.onreadystatechange=function()
     {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        if (xmlhttp.readyState==4 &amp;&amp; xmlhttp.status==200) {
             json_arr=xmlhttp.responseText;
             var arr = JSON.parse(json_arr)
             if (arr!="") {
@@ -325,4 +347,26 @@ function onSignIn(googleUser) {
     xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xmlhttp.send("email=" + email);
 
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#canviar_alumne_professor">canviar_alumne_professor</a></li><li><a href="global.html#canviar_questionari">canviar_questionari</a></li><li><a href="global.html#canviar_questionari_professor">canviar_questionari_professor</a></li><li><a href="global.html#carrega_pregunta">carrega_pregunta</a></li><li><a href="global.html#informe_quest">informe_quest</a></li><li><a href="global.html#informe_questionari_professor">informe_questionari_professor</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#load_alumnes_professor">load_alumnes_professor</a></li><li><a href="global.html#load_quests">load_quests</a></li><li><a href="global.html#load_quests_professor">load_quests_professor</a></li><li><a href="global.html#onSignIn">onSignIn</a></li><li><a href="global.html#pregunta_seguent">pregunta_seguent</a></li><li><a href="global.html#processar">processar</a></li><li><a href="global.html#processar_test">processar_test</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 02:43:24 GMT+0100 (Hora estàndard del Centre d’Europa)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -119,9 +119,12 @@ v10
 -Hi ha un petit error quan selecciono la casella buida de la selectbox. Solucionat.
 -falla per culpa del distinct (molt raro, només falla a l'institut): SELECT employee_id, first_name, last_name, salary FROM employees WHERE department_id = (SELECT distinct department_id FROM departments limit 1)
 -mode_examen = 1 o 0 per tal de confirmar la pregunta abans d'enviar.
+-mode_examen: no es pot veure ni descarregar l'informe, i després de contestar una pregunta tampoc sabrem si és correcta o no (Per canviar el comportament, cercar mode_examen dins del codi)
+-mode examen: es poden preparar dos exàmens diferents, i a l'alumne se li presenta només una de les dues opcions. L'alumne no té perquè saber que els dos exàmens són diferents. En general, poden haver-hi N versions diferents de l'examen (però els exàmens han de ser consecutius a la base de dades)
 -Si la resposta està bé, que també puguin comparar la seva resposta amb la resposta proposada
 -guardar també l'hora que s'ha fet el test (timestamp). Útil per quan es fa un examen i veure si s'han fet vàries intentones. He canviat en el camp alumne_quest.dia el tipus DATE per DATETIME.
 -NOTA: recordar que en un examen, barrejar les preguntes amb el camp random
+-en els informes surt amb colors verd i vermell les preguntes correctes i les incorrectes.
 -create USER, DROP USER. He de donar permisos al bdquest sobre la taula mysql.
 -També hem de donar permisos a l'usuari bdquest amb l'opció  WITH GRANT OPTION, per tal de poder executar les sentències GRANT.
 -GRANT PERMISOS
@@ -133,25 +136,17 @@ v10
 	inserts into quest (sense el camp id_bd)
 	SET foreign_key_checks = 1;
 -En els fitxers pdf que no surtin caràcters estranys tipus informe-16-AdriÃ _JimÃ©nez-11-02-2022.pdf
+-Documentació jsdoc: La documetnació està a ./doc/index.html
+	$ npm install jsoc
+	$ jsdoc -d doc web/v10/js/index.js web/v10/js/index_professor.js
 
 TODO
 =====
 
 -JSDoc
-
-TODO Github (mirar la palma)
--------------
-implementar el .gitignore
-eliminar el php/.pwd (posar a les instruccions que ha d'existir aquest fitxer)
-fitxers ~
-captures_de_pantalla/
-img/
-llegir*
-desplegament*
-SQL/ -> només ha d'haver-hi load_v10.sql
-web/ -> només ha d'haver-hi v10/
-
-posar en el README la informació també en anglès
-
+-migrar a un codi javascript més modern: funcions fletxa, crides AJAX,...
+-posar en el README la informació també en anglès
+-eliminar les variables tipus sel_alumnes2, tant a js com a php
+-open_db_bdquest.php i close_db_bdquest.php crec que ja no calen
 
 

@@ -6,6 +6,7 @@ Després la base de dades bdquest amb el script load_v10.sql
 
 Per canviar l'usuari jquintana@jaumebalmes.net al rol d'alumne (1) o professor (0):
 mysql -u bdquest -pkeiL2lai -e "update alumne set actiu=1 where email='jquintana@jaumebalmes.net'" bdquest
+Es pot fer això sense haver de tocar la base de dades?
 
 Com es crea un qüestionari
 

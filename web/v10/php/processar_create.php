@@ -1,4 +1,9 @@
 <?php
+/*
+BDQuest v10 (GPLv3)
+@ Joan Quintana - 2021-2022
+https://wiki.joanillo.org/index.php/BDQuest
+*/
 
 $bd = $_POST['bd'];
 $sql_solucio = $_POST['solucio'];
@@ -47,10 +52,24 @@ if (strrpos(strtolower($sql_solucio), "create table")===0) {
 	$object_new = str_replace($arr3,$arr3."_".$id_alumne,$object_old);
 } else if (strrpos(strtolower($sql_solucio), "grant")===0 && strrpos(strtolower($sql_solucio), " to ")>0) { //grant ... to pepet@localhost -> grant ... to pepet_xx@localhost
 	$arr = explode(" to ", strtolower($sql_solucio));
+	$object_old = $arr[1]; //pepet@localhost o bé 'pepet'@'localhost' o bé `pepet`@`localhost`
+	$arr2 = explode("@", $object_old);
+	$arr3 = str_replace("'", "", $arr2[0]);
+	$arr4 = str_replace("`", "", $arr3);
+	$object_new = str_replace($arr4,$arr4."_".$id_alumne,$object_old);
+} else if (strrpos(strtolower($sql_solucio), "show grants")===0 && strrpos(strtolower($sql_solucio), " for ")>0) { //grant ... to pepet@localhost -> grant ... to pepet_xx@localhost
+	$arr = explode(" for ", strtolower($sql_solucio));
 	$object_old = $arr[1]; //pepet@localhost o bé 'pepet'@'localhost'
 	$arr2 = explode("@", $object_old);
 	$arr3 = str_replace("'", "", $arr2[0]);
 	$object_new = str_replace($arr3,$arr3."_".$id_alumne,$object_old);
+}  else if (strrpos(strtolower($sql_solucio), "revoke")===0 && strrpos(strtolower($sql_solucio), " from ")>0) { //revoke ...from pepet@localhost -> revoke ... from pepet_xx@localhost
+	$arr = explode(" from ", strtolower($sql_solucio));
+	$object_old = $arr[1]; //pepet@localhost o bé 'pepet'@'localhost' o bé `pepet`@`localhost`
+	$arr2 = explode("@", $object_old);
+	$arr3 = str_replace("'", "", $arr2[0]);
+	$arr4 = str_replace("`", "", $arr3);
+	$object_new = str_replace($arr4,$arr4."_".$id_alumne,$object_old);
 } else if (strrpos(strtolower($sql_solucio), "create procedure")===0) {
 	$arr = explode(" ", $sql_solucio);
 	$object_old = $arr[2]; //nom_proc(... o nom_proc (...
@@ -58,7 +77,7 @@ if (strrpos(strtolower($sql_solucio), "create table")===0) {
 	$arr3 = trim($arr2[0]); //nom_proc
 	$object_old = $arr3;
 	$object_new = $arr3."_".$id_alumne;
-} 
+}
 
 //echo $object_old."\n";
 //echo $object_new."\n";
@@ -73,7 +92,7 @@ if (strrpos($sql_alumne, ";") == strlen($sql_alumne)-1) {
 }
 
 $pwd = file_get_contents('./.pwd');
-$conn = mysqli_connect("localhost", "bdquest", $pwd);
+$conn = mysqli_connect("localhost", "root", "She4aiVa");
 if (!$conn) {
     $log->error('Could not connect: ' . mysql_error());
     die('Could not connect: ' . mysql_error());
@@ -131,6 +150,12 @@ foreach ($arr_posts as $sql_post) {
 		} else {
 			$data_solucio.="NULL";			
 		}
+	} else if (strrpos(strtolower($sql), "show grants")===0) {
+		if ($resultset) {
+			$data_solucio.=json_encode(mysqli_fetch_all($resultset));
+		} else {
+			$data_solucio.="NULL";			
+		}
 	}
 }
 
@@ -165,11 +190,17 @@ foreach ($arr_posts as $sql_post) {
 		} else {
 			$data_alumne.="NULL";			
 		}
+	} else if (strrpos(strtolower($sql), "show grants")===0) {
+		if ($resultset) {
+			$data_alumne.=json_encode(mysqli_fetch_all($resultset));
+		} else {
+			$data_alumne.="NULL";			
+		}
 	}
 }
 
-/*
 //Per controlar què passa:
+/*
 echo($data_solucio);
 echo("\n");
 echo($data_alumne);
